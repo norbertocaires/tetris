@@ -8,7 +8,7 @@
 int main(){
 	int fimDeJogo = 0;
 	int input = 0;
-	char tabuleiro[LINHAS][COLUNAS], *peca;
+	char tabuleiro[NUM_LINHAS][NUM_COLUNAS], *peca;
 
 	memset(tabuleiro,' ', 15 * 25 * sizeof(char));
 

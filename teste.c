@@ -95,7 +95,7 @@ void  adicionar_suite(void){
 }
 
 
-int main(void){
+int main(void, void* tabuleiro) {
 	/*Inicializa o registro de suítes e testes do CUnit*/
 	if (CUE_SUCCESS != CU_initialize_registry())
     		return CU_get_error();
