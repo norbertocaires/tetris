@@ -1,3 +1,8 @@
+/**
+ * O código deste módulo está totalmente desatualizado. Está como o exemplo passado em sala pela professora.
+ */
+
+
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
