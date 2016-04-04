@@ -1,7 +1,7 @@
 #include <ncurses.h>
+#include "parametros.h"
 
-#define POS_L 5
-#define POS_C 10
+
 
 void imprime_borda_tela(){
 	int a;

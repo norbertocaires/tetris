@@ -3,6 +3,7 @@
 #include <string.h>
 #include "engine.h"
 #include "tela.h"
+#include "parametros.h"
 
 int main(){
 	int fimDeJogo = 0;
