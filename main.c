@@ -32,12 +32,12 @@ int main(){
 	while(1){
 		imprime_tabuleiro_sem_borda(tabuleiro);
 		input = pega_input();
-		
-		if(input == 27)
+		//problema na leitura
+		if(input == 'D')//26
 			move_peca_para_esquerda(tabuleiro, &peca);
-		if(input == 26)
+		if(input == 'C')//27
 			move_peca_para_direita(tabuleiro, &peca);
-		if(input == 25)
+		if(input == 'B')//28
 			move_peca_para_baixo(tabuleiro, &peca);
 	}
 	finaliza_ncurses();

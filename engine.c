@@ -12,9 +12,9 @@ void finaliza_ncurses(){
 	endwin();
 }
 
-int pega_input(){
+char pega_input(){
 	fflush(stdin);
-	return getch();
+	return getchar();
 }
 
 void insere_peca_tabuleiro(char tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA peca){
