@@ -60,6 +60,7 @@ int gera_tipo_peca(){
 */
 
 void gera_posicao_peca(PECA* peca){
+	int posicao = 0;
 	if(peca->tipo == 1){
 		peca->pos_linha = 0;
 		peca->pos_coluna = 13;
@@ -72,7 +73,7 @@ void gera_posicao_peca(PECA* peca){
 			peca->pos_coluna = 13 - 2;
 	}
 		
-//	int posicao = 0;
+
 //	while(posicao ==0){
 //		posicao = rand()%26;
 //		if(tipo == RETA_HORIZONTAL && (posicao+tamanho)>25){

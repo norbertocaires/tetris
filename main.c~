@@ -32,12 +32,13 @@ int main(){
 	while(1){
 		imprime_tabuleiro_sem_borda(tabuleiro);
 		input = pega_input();
+		printf("|%i|", input);
 		if(input == 27)
-			move_peca_para_esquerda(tabuleiro, &peca);
+			move_peca_para_baixo(tabuleiro, &peca);
 		if(input == 26)
 			move_peca_para_direita(tabuleiro, &peca);
-		if(input == 25)
-			move_peca_para_baixo(tabuleiro, &peca);
+		if(input == 25){}
+
 	}
 	finaliza_ncurses();
 	return 0;

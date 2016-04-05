@@ -42,7 +42,7 @@ int gera_tamanho_peca();
 int gera_tipo_peca();
 void gera_posicao_peca(PECA* peca);
 void movimenta_peca();
-void adicionaPecaLista(PECAS *pecas, PECA *peca);
+void adicionaPeca(PECAS *pecas, PECA *peca);
 void inicializaLista(PECAS *pecas);
 /** Fim funções relaciondas ao módulo Pecas */
 #endif
