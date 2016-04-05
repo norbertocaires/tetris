@@ -1,7 +1,7 @@
 #include <ncurses.h>
+#include "parametros.h"
 
-#define POS_L 5
-#define POS_C 10
+
 
 void imprime_borda_tela(){
 	int a;
@@ -16,29 +16,29 @@ void imprime_borda_tela(){
 	refresh();
 }
 
-void imprime_tabuleiro_com_borda(char tabuleiro[15][25]){
+void imprime_tabuleiro_com_borda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	int a, b;
-	for(a=0;a<15;a++){
+	for(a=0;a<NUM_LINHAS;a++){
 		if(a+5 != 10){
 			mvaddch(a+POS_L, POS_C-1, '|');
-			mvaddch(a+POS_L, 25+POS_C, '|');
+			mvaddch(a+POS_L, NUM_COLUNAS+POS_C, '|');
 		}else{
 			mvaddch(a+POS_L, POS_C-1, '*');
-			mvaddch(a+POS_L, 25+POS_C, '*');
+			mvaddch(a+POS_L, NUM_COLUNAS+POS_C, '*');
 		}
-		for(b=0;b<25;b++){
+		for(b=0;b<NUM_COLUNAS;b++){
 			mvaddch(4, b+POS_C, '_');
-			mvaddch(15+POS_L, b+POS_C, '*');
+			mvaddch(NUM_LINHAS+POS_L, b+POS_C, '*');
 			mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
 		}
 	}
 	refresh();
 }
 
-void imprime_tabuleiro_sem_borda(char tabuleiro[15][25]){
+void imprime_tabuleiro_sem_borda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	int a, b;
-	for(a=0;a<15;a++){
-		for(b=0;b<25;b++){
+	for(a=0;a<NUM_LINHAS;a++){
+		for(b=0;b<NUM_COLUNAS;b++){
 			mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
 		}
 	}

@@ -3,11 +3,12 @@
 #include <string.h>
 #include "engine.h"
 #include "tela.h"
+#include "parametros.h"
 
 int main(){
 	int fimDeJogo = 0;
 	int input = 0;
-	char tabuleiro[15][25], *peca;
+	char tabuleiro[NUM_LINHAS][NUM_COLUNAS], *peca;
 
 	memset(tabuleiro,' ', 15 * 25 * sizeof(char));
 
