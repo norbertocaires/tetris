@@ -8,7 +8,7 @@
 
 int main(){
 	int fimDeJogo = 0;
-	int input = 0;
+	int input;
 	char tabuleiro[NUM_LINHAS][NUM_COLUNAS];
 
 	// PECA CORRENTE (ultima da lista de pecas)
@@ -32,6 +32,7 @@ int main(){
 	while(1){
 		imprime_tabuleiro_sem_borda(tabuleiro);
 		input = pega_input();
+		
 		if(input == 27)
 			move_peca_para_esquerda(tabuleiro, &peca);
 		if(input == 26)

@@ -14,8 +14,7 @@ void finaliza_ncurses(){
 
 int pega_input(){
 	fflush(stdin);
-	__fpurge(stdin);
-	return getchar();
+	return getch();
 }
 
 void insere_peca_tabuleiro(char tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA peca){
@@ -38,12 +37,12 @@ void move_peca_para_esquerda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca
 		if(peca->pos_coluna == 0)
 			return;
 		int linha;
-		for(linha = peca->pos_linha; linha< peca->tamanho; linha++){
+		for(linha = peca->pos_linha; linha< peca->tamanho + peca->pos_linha; linha++){
 			if(tabuleiro[linha][peca->pos_coluna-1] == CHAR_PECA){
 				return;
 			}
 		}
-		for(linha = peca->pos_linha; linha< peca->tamanho; linha++){
+		for(linha = peca->pos_linha; linha< peca->tamanho + peca->pos_linha; linha++){
 			tabuleiro[linha][peca->pos_coluna-1] = CHAR_PECA;
 			tabuleiro[linha][peca->pos_coluna] = ' ';
 
@@ -63,28 +62,28 @@ void move_peca_para_esquerda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca
 
 void move_peca_para_direita(char tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 	if(peca->tipo == 1){
-		if(peca->pos_coluna >= 24){
+		if(peca->pos_coluna > 23){
 			return;
 		}
 		int linha;
-		for(linha = peca->pos_linha; linha< peca->tamanho; linha++){
+		for(linha = peca->pos_linha; linha< peca->tamanho+peca->pos_linha; linha++){
 			if(tabuleiro[linha][peca->pos_coluna+1] == CHAR_PECA){
 				return;
 			}
 		}
-		for(linha = peca->pos_linha; linha< peca->tamanho; linha++){
+		for(linha = peca->pos_linha; linha< peca->tamanho+peca->pos_linha; linha++){
 			tabuleiro[linha][peca->pos_coluna+1] = CHAR_PECA;
 			tabuleiro[linha][peca->pos_coluna] = ' ';
 
 		}
 	}
 	if(peca->tipo == 2){
-		if(peca->pos_coluna + peca->tamanho > 25){
+		if(peca->pos_coluna + peca->tamanho > 24){
 			return;
 		}
 		if(tabuleiro[peca->pos_linha][peca->pos_coluna+ peca->tamanho] == ' '){
-			tabuleiro[peca->pos_linha][peca->pos_coluna + peca->tamanho-1] = CHAR_PECA;
-			tabuleiro[peca->pos_linha][peca->pos_coluna-1] = ' ';
+			tabuleiro[peca->pos_linha][peca->pos_coluna + peca->tamanho] = CHAR_PECA;
+			tabuleiro[peca->pos_linha][peca->pos_coluna] = ' ';
 			
 		}
 	}
