@@ -9,7 +9,7 @@
 int main(){
 	int fimDeJogo = 0;
 	int input;
-	char tabuleiro[NUM_LINHAS][NUM_COLUNAS];
+	int tabuleiro[NUM_LINHAS][NUM_COLUNAS];
 
 	// PECA CORRENTE (ultima da lista de pecas)
 	PECA peca;
@@ -18,7 +18,7 @@ int main(){
 	PECAS pecas;
 	inicializaLista(&pecas);
 
-	memset(tabuleiro,' ', NUM_LINHAS * NUM_COLUNAS * sizeof(char));
+	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 
 	inicia_ncurses();
 

@@ -5,5 +5,7 @@
 #define POS_C 10 /**   Constante que indica a coluna inicial onde o tabuleiro será imprimido*/
 #define NUM_COLUNAS 25 /** Constante que indica o número de colunas do tabuleiro*/
 #define NUM_LINHAS 15 /** Constante que indica o número de linhas do tabuleiro*/
+#define CHAR_PECA 'O' /** COnstante que indica peça no tabuleiro */
+
 
 #endif

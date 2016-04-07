@@ -24,7 +24,7 @@ struct peca{
     int pos_linha;
     int pos_coluna;
     int status;
-
+    int cor;
     struct peca *proximo;
 };
 typedef struct peca PECA;
@@ -44,6 +44,7 @@ void gera_posicao_peca(PECA* peca);
 void movimenta_peca();
 void adicionaPecaLista(PECAS *pecas, PECA *peca);
 void inicializaLista(PECAS *pecas);
+int gera_cor_peca();
 /** Fim funções relaciondas ao módulo Pecas */
 #endif
 

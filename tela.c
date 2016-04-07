@@ -15,7 +15,7 @@ void imprime_borda_tela(){
 	refresh();
 }
 
-void imprime_tabuleiro_com_borda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+void imprime_tabuleiro_com_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	int a, b;
 	for(a=0;a<NUM_LINHAS;a++){
 		if(a+5 != 10){
@@ -34,12 +34,24 @@ void imprime_tabuleiro_com_borda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	refresh();
 }
 
-void imprime_tabuleiro_sem_borda(char tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+void imprime_tabuleiro_sem_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	int a, b;
+	int cor = gera_cor_peca();
 	for(a=0;a<NUM_LINHAS;a++){
 		for(b=0;b<NUM_COLUNAS;b++){
-			mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
+			if(tabuleiro[a][b]!=0){
+				init_pair(1,COLOR_WHITE,tabuleiro[a][b]);
+				attrset(COLOR_PAIR(1));
+				mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
+			}else{
+				init_pair(2,COLOR_WHITE,COLOR_BLACK);
+				attrset(COLOR_PAIR(2));
+				mvaddch(a+POS_L, b+POS_C,' ');
+			}
+
+			
 		}
 	}
+	attrset(COLOR_PAIR(2));
 	refresh();
 }

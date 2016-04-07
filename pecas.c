@@ -16,9 +16,11 @@ PECA gera_peca(){
    peca.tipo = gera_tipo_peca();
    peca.tamanho = gera_tamanho_peca();
    gera_posicao_peca(&peca);
+   peca.cor = gera_cor_peca();
    peca.status = EM_JOGO;
    return peca;
 }
+
 
 /**
 * Função que gera, aleatóriamente o tamanho da peça. Nessa versão a peça terá entre os tamanhos 3 e 5.
@@ -34,6 +36,22 @@ int gera_tamanho_peca(){
 	return tamanho_peca;
 
 }
+
+/**
+* Função que gera, aleatoriamente a cor da peça. 
+*
+*/
+
+int gera_cor_peca(){
+	int cor_peca = 0;
+
+	while(cor_peca<3 || cor_peca>7){
+    		cor_peca=rand()%8;
+	}
+	return cor_peca;
+
+}
+
 /**
 * Função que gera, aleatóriamente, o tipo da peça. Nessa versão poderá ser do tipo RETA_VERTICAL e RETA_HORIZONTAL. Caso haja
 * erro na geração, será retornado o número 99.
