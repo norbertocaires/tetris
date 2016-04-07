@@ -8,7 +8,7 @@
 
 int main(){
 	int fimDeJogo = 0;
-	int input;
+	char input;
 	int tabuleiro[NUM_LINHAS][NUM_COLUNAS];
 
 	// PECA CORRENTE (ultima da lista de pecas)
@@ -23,7 +23,7 @@ int main(){
 	inicia_ncurses();
 
 	imprime_borda_tela();
-	imprime_tabuleiro_com_borda(tabuleiro);
+	imprime_borda_tabuleiro();
 
 	while(verifica_fim_de_jogo(tabuleiro) == 0){
 		peca = gera_peca();

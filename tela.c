@@ -3,50 +3,54 @@
 #include "pecas.h"
 
 void imprime_borda_tela(){
-	int a;
-	for(a=0;a<COLS;a++){
-		mvaddch(0, a, '@');
-		mvaddch(LINES-1, a, '@');
+	int temp;
+	for(temp=0;temp<COLS;temp++){
+		mvaddch(0, temp, '@');
+		mvaddch(LINES-1, temp, '@');
 	}
-	for(a=0;a<LINES;a++){
-		mvaddch(a+1, 0,'@');
-		mvaddch(a, COLS-1, '@');
+	for(temp=0;temp<LINES;temp++){
+		mvaddch(temp+1, 0,'@');
+		mvaddch(temp, COLS-1, '@');
 	}
 	refresh();
 }
 
-void imprime_tabuleiro_com_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
-	int a, b;
-	for(a=0;a<NUM_LINHAS;a++){
-		if(a+5 != 10){
-			mvaddch(a+POS_L, POS_C-1, '|');
-			mvaddch(a+POS_L, NUM_COLUNAS+POS_C, '|');
+void imprime_borda_tabuleiro(){
+	int linha, coluna;
+	for(linha=0;linha<NUM_LINHAS;linha++){
+		if(linha+5 != 10){
+			mvaddch(linha+POS_L, POS_C-1, '|');
+			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, '|');
 		}else{
-			mvaddch(a+POS_L, POS_C-1, '*');
-			mvaddch(a+POS_L, NUM_COLUNAS+POS_C, '*');
+			mvaddch(linha+POS_L, POS_C-1, '*');
+			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, '*');
 		}
-		for(b=0;b<NUM_COLUNAS;b++){
-			mvaddch(4, b+POS_C, '_');
-			mvaddch(NUM_LINHAS+POS_L, b+POS_C, '*');
-			mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
+		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
+			mvaddch(4, coluna+POS_C, '_');
+			mvaddch(NUM_LINHAS+POS_L, coluna+POS_C, '*');
 		}
 	}
 	refresh();
 }
 
 void imprime_tabuleiro_sem_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
-	int a, b;
-	int cor = gera_cor_peca();
-	for(a=0;a<NUM_LINHAS;a++){
-		for(b=0;b<NUM_COLUNAS;b++){
-			if(tabuleiro[a][b]!=0){
-				init_pair(1,COLOR_WHITE,tabuleiro[a][b]);
-				attrset(COLOR_PAIR(1));
-				mvaddch(a+POS_L, b+POS_C,tabuleiro[a][b]);
+	int linha, coluna;
+
+	init_pair(3,3,3);
+	init_pair(4,4,4);
+	init_pair(5,5,5);
+	init_pair(6,6,6);
+	init_pair(7,7,7);
+	init_pair(2,COLOR_BLACK,COLOR_BLACK);
+
+	for(linha=0;linha<NUM_LINHAS;linha++){
+		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
+			if(tabuleiro[linha][coluna]!=0){
+				attrset(COLOR_PAIR(tabuleiro[linha][coluna]));
+				mvaddch(linha+POS_L, coluna+POS_C,' ');
 			}else{
-				init_pair(2,COLOR_WHITE,COLOR_BLACK);
 				attrset(COLOR_PAIR(2));
-				mvaddch(a+POS_L, b+POS_C,' ');
+				mvaddch(linha+POS_L, coluna+POS_C,' ');
 			}
 
 			

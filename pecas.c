@@ -45,7 +45,9 @@ int gera_tamanho_peca(){
 int gera_cor_peca(){
 	int cor_peca = 0;
 
-	while(cor_peca<3 || cor_peca>7){
+	srand(time(NULL));
+
+	while(cor_peca<4 || cor_peca>7){
     		cor_peca=rand()%8;
 	}
 	return cor_peca;
@@ -89,16 +91,6 @@ void gera_posicao_peca(PECA* peca){
 		else
 			peca->pos_coluna = 13 - 2;
 	}
-		
-//	int posicao = 0;
-//	while(posicao ==0){
-//		posicao = rand()%26;
-//		if(tipo == RETA_HORIZONTAL && (posicao+tamanho)>25){
-//			posicao=0;
-//		}
-//	}
-//	return posicao;
-
 }
 
 /**

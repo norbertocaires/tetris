@@ -2,7 +2,7 @@
 
 void inicia_ncurses();
 void finaliza_ncurses();
-int pega_input();
+char pega_input();
 
 void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA peca);
 
