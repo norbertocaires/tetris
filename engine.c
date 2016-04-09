@@ -186,3 +186,61 @@ int verifica_fim_de_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	}
 	return 0;
 }
+
+/**
+*   Função que recebe com parâmetro o tabuleiro e verifica se alguma das linhas está completa. Retorna a pontuação feita naquela rodada ( 100 pontos para cada linha)
+*/
+
+
+int pontua(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+
+	int linha,coluna,contador_peca=0,buffer_cor_peca,pontuacao = 0 ;
+
+	for(linha=0;linha<NUM_LINHAS;linha++){
+		contador_peca = 0;
+		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
+			if(tabuleiro[linha][coluna] != 0){
+				buffer_cor_peca = tabuleiro[linha][coluna];
+				contador_peca++;
+			}
+		}
+		if(contador_peca==NUM_COLUNAS){
+			desce_todas_linhas(tabuleiro,linha);
+			pontuacao = pontuacao+100;
+
+		}
+	}
+	
+	return pontuacao;
+}
+
+void limpa_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+	int coluna;
+	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
+		tabuleiro[linha][coluna] = 0;
+		
+	}
+}
+
+void desce_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+
+	int coluna;
+
+	for (coluna=0;coluna<NUM_COLUNAS;coluna++){
+		tabuleiro[linha][coluna] = tabuleiro[linha-1][coluna];
+	}
+
+}
+
+void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+
+	int linha_temp,coluna,i=0;
+	limpa_linha(tabuleiro,linha);
+
+	i=linha;
+	while(i>6){
+		desce_linha(tabuleiro,i);
+		i--;	
+	}
+
+}

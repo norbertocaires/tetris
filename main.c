@@ -7,7 +7,7 @@
 #include "parametros.h"
 
 int main(){
-	int fimDeJogo = 0;
+	int fimDeJogo = 0,pontuacao=0;
 	char input;
 	int tabuleiro[NUM_LINHAS][NUM_COLUNAS];
 
@@ -24,7 +24,7 @@ int main(){
 
 	imprime_borda_tela();
 	imprime_borda_tabuleiro();
-
+	imprime_tela_status();
 	while(verifica_fim_de_jogo(tabuleiro) == 0){
 		peca = gera_peca();
 		adicionaPecaLista(&pecas, &peca);
@@ -42,6 +42,8 @@ int main(){
 			verifica_peca_em_jogo(tabuleiro, &peca);
 			imprime_tabuleiro_sem_borda(tabuleiro);
 		}
+		pontuacao = pontuacao + pontua(tabuleiro);
+		imprime_tela_status(pontuacao);
 	}
 	finaliza_ncurses();
 	return 0;
