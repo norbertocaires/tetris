@@ -25,7 +25,7 @@ int main(){
 	imprime_borda_tela();
 	imprime_tela_inicial();
 	imprime_borda_tabuleiro();
-	imprime_tela_status();
+	imprime_tela_status(pontuacao);
 	while(verifica_fim_de_jogo(tabuleiro) == 0){
 		peca = gera_peca();
 		adicionaPecaLista(&pecas, &peca);
@@ -43,6 +43,7 @@ int main(){
 			verifica_peca_em_jogo(tabuleiro, &peca);
 			imprime_tabuleiro_sem_borda(tabuleiro);
 		}
+
 		pontuacao = pontuacao + pontua(tabuleiro);
 		imprime_tela_status(pontuacao);
 	}
