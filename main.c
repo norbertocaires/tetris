@@ -21,8 +21,9 @@ int main(){
 	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 
 	inicia_ncurses();
-
+	 	
 	imprime_borda_tela();
+	imprime_tela_inicial();
 	imprime_borda_tabuleiro();
 	imprime_tela_status();
 	while(verifica_fim_de_jogo(tabuleiro) == 0){

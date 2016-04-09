@@ -214,6 +214,12 @@ int pontua(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 	return pontuacao;
 }
 
+
+/**
+*   Função que transforma todas as colunas de uma linhas completa em zeros. Na versão do primeiro trabalho, essa ação não poderá ser visualizada. Porém quando as funções de tempo forem implementadas,
+*   a "limpeza" poderá ser visualizada.
+*
+*/
 void limpa_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 	int coluna;
 	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
@@ -221,6 +227,12 @@ void limpa_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 		
 	}
 }
+
+/**
+*     Função que faz com que todas as linhas, acima da linha
+*
+*/
+
 
 void desce_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 

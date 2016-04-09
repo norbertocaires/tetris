@@ -15,6 +15,38 @@ void imprime_borda_tela(){
 	refresh();
 }
 
+void imprime_tela_inicial(){
+
+	int i,j;
+
+	start_color();
+	init_pair(9,COLOR_GREEN,COLOR_GREEN);
+	init_pair(10,COLOR_WHITE,COLOR_GREEN);
+	init_pair(11,COLOR_BLACK,COLOR_BLACK);
+	init_pair(12,COLOR_WHITE,COLOR_BLACK);
+	attrset(COLOR_PAIR(9));
+
+	for (i=1;i<(LINES-1);i++){
+		for(j=1;j<(COLS-1);j++){
+			mvaddch(i, j,'A');
+		}
+	}
+
+	attrset(COLOR_PAIR(10));
+	move(3,10);
+	printw("...::: BEM VINDO AO TETRIS :::...");
+	move(6,3);
+	printw("...::: PRESSIONE ALGUMA TECLA PARA INICIAR O JOGO :::...");
+	getch();
+	attrset(COLOR_PAIR(11));
+	for (i=1;i<(LINES-1);i++){
+		for(j=1;j<(COLS-1);j++){
+			mvaddch(i, j,' ');
+		}
+	}
+	attrset(COLOR_PAIR(12));
+}
+
 void imprime_borda_tabuleiro(){
 	int linha, coluna;
 	for(linha=0;linha<NUM_LINHAS;linha++){
