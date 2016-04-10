@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "pecas.h"
 #include "engine.h"
 #include "tela.h"
@@ -31,7 +32,12 @@ int main(){
 	imprime_borda_tabuleiro();
 	imprime_tela_status(pontuacao);
 	pega_input();
+
+
+	time_t hora_inicio = time(NULL);
+
 	while(verifica_fim_de_jogo(tabuleiro) == 0){
+
 		peca = gera_peca();
 		adicionaPecaLista(&pecas, peca);
 
@@ -53,9 +59,11 @@ int main(){
 		pontuacao = pontuacao + pontua(tabuleiro);
 		imprime_tela_status(pontuacao);
 	}
+
+	time_t hora_final =  time(NULL);
 	
 	gera_lista_de_qtds(&pecas, &lista_qtd_cada_peca);
-	imprime_tela_final(&lista_qtd_cada_peca, pontuacao);
+	imprime_tela_final(&lista_qtd_cada_peca, pontuacao, hora_inicio, hora_final);
 
 	finaliza_ncurses();
 	return 0;

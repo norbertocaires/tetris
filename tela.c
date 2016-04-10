@@ -1,3 +1,4 @@
+#include <time.h>
 #include <ncurses.h>
 #include "parametros.h"
 #include "pecas.h"
@@ -110,7 +111,7 @@ void imprime_tela_status(int pontuacao){
 	
 }
 
-void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao){
+void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
 	int i,j;
 
 	start_color();
@@ -144,8 +145,28 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao){
 		linha += 1;
 		peca = peca->proximo;
 	}
-	move(LINES-8,15);
+
+	struct tm inicio = *localtime (&hora_inicio);
+	struct tm fim = *localtime (&hora_final);
+
+	move(LINES-9,25);
+	printw("HORA INCIO: %d:%d:%d", inicio.tm_hour, inicio.tm_min, inicio.tm_sec);
+
+	move(LINES-8,25);
+	printw("HORA FIM: %d:%d:%d", fim.tm_hour, fim.tm_min, fim.tm_sec);
+
+	int diferenca = (int)difftime(hora_final, hora_inicio);
+	
+	int segundos = diferenca%60;
+	int minutos = diferenca/60;
+	int horas = diferenca/60/60;
+
+	move(LINES-7,25);
+	printw("TEMPO DE JOGO: %d:%d:%d", horas, minutos%60, segundos);
+
+	move(LINES-6,25);
 	printw("PONTUACAO FINAL: %i", pontuacao);
+
 	move(LINES-3,10);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA FINALIZAR :::...");
 	getch();

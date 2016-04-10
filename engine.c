@@ -11,6 +11,7 @@ void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha);
 void inicia_ncurses(){
 	initscr();
 	start_color();
+	curs_set(FALSE);
 }
 
 /*
