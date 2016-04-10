@@ -2,6 +2,8 @@
 #include "pecas.h"
 #include "parametros.h"
 
+void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha);
+
 /*
 * Finaliza ncurses. 
 *
@@ -31,17 +33,17 @@ int pega_input(){
 * Desenha peça atual no tabuleiro. 
 *
 */
-void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA peca){
-	if(peca.tipo == RETA_VERTICAL){
+void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+	if(peca->tipo == RETA_VERTICAL){
 		int linha;
-		for(linha = 0; linha< peca.tamanho; linha++){
-			tabuleiro[linha][peca.pos_coluna] = peca.cor;
+		for(linha = 0; linha< peca->tamanho; linha++){
+			tabuleiro[linha][peca->pos_coluna] = peca->cor;
 		}
 	}
-	if(peca.tipo == RETA_HORIZONTAL){
+	if(peca->tipo == RETA_HORIZONTAL){
 		int coluna;
-		for(coluna = peca.pos_coluna; coluna< peca.tamanho + peca.pos_coluna; coluna++){
-			tabuleiro[peca.pos_linha][coluna] = peca.cor;
+		for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
+			tabuleiro[peca->pos_linha][coluna] = peca->cor;
 		}
 	}
 }
@@ -194,13 +196,12 @@ int verifica_fim_de_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 
 int pontua(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 
-	int linha,coluna,contador_peca=0,buffer_cor_peca,pontuacao = 0 ;
+	int linha,coluna,contador_peca=0,pontuacao = 0 ;
 
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		contador_peca = 0;
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
 			if(tabuleiro[linha][coluna] != 0){
-				buffer_cor_peca = tabuleiro[linha][coluna];
 				contador_peca++;
 			}
 		}
@@ -246,11 +247,11 @@ void desce_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 
 void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 
-	int linha_temp,coluna,i=0;
+	int i=0;
 	limpa_linha(tabuleiro,linha);
 
 	i=linha;
-	while(i>6){
+	while(i>1){
 		desce_linha(tabuleiro,i);
 		i--;	
 	}

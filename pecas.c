@@ -8,16 +8,16 @@
 *
 **/
 
-PECA gera_peca(){
+PECA* gera_peca(){
 
    srand( (unsigned)time(NULL) );
-   PECA peca;
+   PECA* peca = malloc(sizeof(PECA));;
 
-   peca.tipo = gera_tipo_peca();
-   peca.tamanho = gera_tamanho_peca();
-   gera_posicao_peca(&peca);
-   peca.cor = gera_cor_peca();
-   peca.status = EM_JOGO;
+   peca->tipo = gera_tipo_peca();
+   peca->tamanho = gera_tamanho_peca();
+   gera_posicao_peca(peca);
+   peca->cor = gera_cor_peca();
+   peca->status = EM_JOGO;
    return peca;
 }
 
@@ -94,6 +94,51 @@ void gera_posicao_peca(PECA* peca){
 }
 
 /**
+* Faz copia de peca
+*/
+PECA* faz_copia_de_peca(PECA* peca){
+	PECA* copia = malloc(sizeof(PECA));
+	copia->tipo = peca->tipo;
+	copia->tamanho = peca->tamanho;
+	copia->pos_linha = peca->pos_linha;
+	copia->pos_coluna = peca->pos_coluna;
+	copia->status = peca->status;
+	copia->cor = peca->cor;
+	copia->qtd=1;
+	return copia;
+}
+
+/**
+* Função que gera lista de peças e com a quantidade que cada 
+* peca apareceu no jogo;
+**/
+void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
+	if(pecas->primeiro == NULL)
+		return;
+	int add;
+
+	PECA *peca = pecas->primeiro;
+	PECA *peca_qtd;
+	while(peca != NULL){
+		peca_qtd = nova_lista_qtd->primeiro;
+		add =0;
+		while(peca_qtd != NULL){
+			if(peca->tipo == peca_qtd->tipo && peca->tamanho == peca_qtd->tamanho ){
+				peca_qtd->qtd ++;
+				add =1;
+			}
+			peca_qtd = peca_qtd->proximo;
+		}
+		if(add ==0){
+
+			adicionaPecaLista(nova_lista_qtd, faz_copia_de_peca(peca));
+		}
+		peca = peca->proximo;
+	}
+}
+
+
+/**
 * Funcao inicialza lista de peças.
 *
 */
@@ -111,10 +156,9 @@ void adicionaPecaLista(PECAS *pecas, PECA *peca ){
 	if(pecas->primeiro == NULL){
 		pecas->primeiro = peca;
 		pecas->ultimo = peca;
-	}else{		
+	}else{				
 		pecas->ultimo->proximo = peca;
 		pecas->ultimo = peca;
 	}
-	peca->proximo = NULL;
 	pecas->tamanho++;
 }

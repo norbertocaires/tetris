@@ -3,15 +3,7 @@
 #include "pecas.h"
 
 void imprime_borda_tela(){
-	int temp;
-	for(temp=0;temp<COLS;temp++){
-		mvaddch(0, temp, '@');
-		mvaddch(LINES-1, temp, '@');
-	}
-	for(temp=0;temp<LINES;temp++){
-		mvaddch(temp+1, 0,'@');
-		mvaddch(temp, COLS-1, '@');
-	}
+	border(0, 0, 0, 0, 0, 0, 0, 0);
 	refresh();
 }
 
@@ -37,6 +29,7 @@ void imprime_tela_inicial(){
 	printw("...::: BEM VINDO AO TETRIS :::...");
 	move(6,3);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA INICIAR O JOGO :::...");
+	getch();
 	getch();
 	attrset(COLOR_PAIR(11));
 	for (i=1;i<(LINES-1);i++){
@@ -104,10 +97,9 @@ void imprime_tela_status(int pontuacao){
 	
 	WINDOW *my_win;
 	int startx, starty, width, height;
-	int ch;
 
-	startx = 40;
-	starty = 5;
+	startx = 30 + POS_C;
+	starty = POS_L;
 
 	height = 3;
 	width = 20;
@@ -116,4 +108,45 @@ void imprime_tela_status(int pontuacao){
 	mvwprintw(my_win,1,3,"Pontuacao: %d",pontuacao);
 	wrefresh(my_win);
 	
+}
+
+void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao){
+	int i,j;
+
+	start_color();
+	init_pair(9,COLOR_RED,COLOR_RED);
+	init_pair(10,COLOR_WHITE,COLOR_RED);
+	init_pair(11,COLOR_BLACK,COLOR_BLACK);
+	init_pair(12,COLOR_WHITE,COLOR_BLACK);
+	attrset(COLOR_PAIR(9));
+
+	for (i=1;i<(LINES-1);i++){
+		for(j=1;j<(COLS-1);j++){
+			mvaddch(i, j,'A');
+		}
+	}
+
+	attrset(COLOR_PAIR(10));
+	move(3,14);
+	printw("...::: FIM DE JOGO :::...");
+	PECA* peca = lista_qtd_cada_peca->primeiro;
+	int linha = 7;
+	move(5,10);
+	printw("QUANTIDADE DE CADA PECAS:");
+	while(peca != NULL){
+		move(linha,10);
+		if(peca->tipo == RETA_VERTICAL){
+			printw("|RETA VERTICAL| QUANTIDADE: %i TAMANHO: %i", peca->qtd, peca->tamanho );
+		}
+		if(peca->tipo == RETA_HORIZONTAL){
+			printw("|RETA HORIZONTAL| QUANTIDADE: %i TAMANHO: %i", peca->qtd, peca->tamanho );
+		}
+		linha += 1;
+		peca = peca->proximo;
+	}
+	move(LINES-8,15);
+	printw("PONTUACAO FINAL: %i", pontuacao);
+	move(LINES-3,10);
+	printw("...::: PRESSIONE ALGUMA TECLA PARA FINALIZAR :::...");
+	getch();
 }
