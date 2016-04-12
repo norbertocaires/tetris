@@ -16,6 +16,13 @@
 
 /** Fim das constates que modelarão os status peças */
 
+/** Início das constatnes que modelarão o tamanho máximo e mínimo que as peças poderão ter.*/
+
+#define TAM_PECA_MAX 5
+#define TAM_PECA_MIN 3
+
+/** Fim das constatnes que modelarão o tamanho máximo e mínimo que as peças poderão ter.*/
+
 
 /** Struct que modela uma peça do jogo*/
 struct peca{
@@ -38,21 +45,17 @@ typedef struct pecas {
 } PECAS;
 
 /** Inicio funções relaciondas ao módulo Pecas */
+
 PECA* gera_peca();
 int gera_tamanho_peca();
+int gera_cor_peca();
 int gera_tipo_peca();
 void gera_posicao_peca(PECA* peca);
-void movimenta_peca();
-void adicionaPecaLista(PECAS *pecas, PECA *peca);
-void inicializaLista(PECAS *pecas);
-int gera_cor_peca();
-
-void adicionaPecaLista_qtd(PECAS *pecas, PECA *peca );
-void gera_lista_qtd_cada_peca(PECAS pecas, PECAS *nova_lista_qtd);
-
-void adicionaPecaLista_qtd(PECAS *pecas, PECA *peca );
+PECA* faz_copia_de_peca(PECA* peca);
 void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd);
+void inicializaLista(PECAS *pecas);
+void adicionaPecaLista(PECAS *pecas, PECA *peca);
 
-/** Fim funções relaciondas ao módulo Pecas */
+
 #endif
 

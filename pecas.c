@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "pecas.h"
+#include "parametros.h"
 
 /**
 * Função que retorna um parâmetro do tipo PECA, aleatório, gerando seu tipo e tamanho.
@@ -10,8 +11,8 @@
 
 PECA* gera_peca(){
 
-   srand( (unsigned)time(NULL) );
-   PECA* peca = malloc(sizeof(PECA));;
+   srand((unsigned)time(NULL) );
+   PECA* peca = malloc(sizeof(PECA));
 
    peca->tipo = gera_tipo_peca();
    peca->tamanho = gera_tamanho_peca();
@@ -30,8 +31,8 @@ PECA* gera_peca(){
 int gera_tamanho_peca(){
 	int tamanho_peca = 0;
 
-	while(tamanho_peca<3 || tamanho_peca>5){
-    		tamanho_peca=rand()%6;
+	while(tamanho_peca<TAM_PECA_MIN || tamanho_peca>TAM_PECA_MAX){
+    		tamanho_peca=rand()%(TAM_PECA_MAX+1);
 	}
 	return tamanho_peca;
 
@@ -47,7 +48,7 @@ int gera_cor_peca(){
 
 	srand(time(NULL));
 
-	while(cor_peca<4 || cor_peca>7){
+	while(cor_peca<1 || cor_peca>7){
     		cor_peca=rand()%8;
 	}
 	return cor_peca;
@@ -80,11 +81,11 @@ int gera_tipo_peca(){
 */
 
 void gera_posicao_peca(PECA* peca){
-	if(peca->tipo == 1){
+	if(peca->tipo == RETA_VERTICAL){
 		peca->pos_linha = 0;
 		peca->pos_coluna = 13;
 	}
-	if(peca->tipo == 2){
+	if(peca->tipo == RETA_HORIZONTAL){
 		peca->pos_linha = 0;
 		if(peca->tamanho == 3)
 			peca->pos_coluna = 13 - 1;

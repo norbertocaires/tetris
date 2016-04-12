@@ -1,0 +1,10 @@
+all :	programa clear
+
+programa: pecas.o 
+	gcc testePecas.c testePecas.h pecas.o -o tetris -lncurses
+
+pecas.o: pecas.c pecas.h
+	gcc -c pecas.c -Wall -Wextra
+
+clear:
+	rm *.o
