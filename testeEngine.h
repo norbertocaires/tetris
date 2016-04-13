@@ -1,5 +1,6 @@
 #ifndef _testePecas_h
 #define _testePecas_h
+#include "pecas.h"
 
 /**
 * Abaixo estão as funções que efetuam os testes o modulo Engine
