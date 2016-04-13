@@ -48,7 +48,7 @@ int gera_cor_peca(){
 
 	srand(time(NULL));
 
-	while(cor_peca<1 || cor_peca>7){
+	while(cor_peca<3 || cor_peca>7){
     		cor_peca=rand()%8;
 	}
 	return cor_peca;

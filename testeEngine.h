@@ -1,0 +1,52 @@
+#ifndef _testePecas_h
+#define _testePecas_h
+
+/**
+* Abaixo estão as funções que efetuam os testes o modulo Engine
+*/
+
+void testa_pontua(void);
+void teste_insere_reta_horizontal_tamanho_3(void);
+void teste_insere_reta_horizontal_tamanho_4(void);
+void teste_insere_reta_horizontal_tamanho_5(void);
+void teste_insere_reta_vertical_tamanho_3(void);
+void teste_insere_reta_vertical_tamanho_4(void);
+void teste_insere_reta_vertical_tamanho_5(void);
+void teste_move_peca_para_esquerda_horizontal_tamanho_3(void);
+void teste_move_peca_para_esquerda_horizontal_tamanho_4(void);
+void teste_move_peca_para_esquerda_horizontal_tamanho_5(void);
+void teste_move_peca_para_esquerda_ate_borda_horizontal_tamanho_3(void);
+void teste_move_peca_para_esquerda_ate_borda_horizontal_tamanho_4(void);
+void teste_move_peca_para_esquerda_ate_borda_horizontal_tamanho_5(void);
+void teste_move_peca_para_esquerda_vertical_tamanho_3(void);
+void teste_move_peca_para_esquerda_vertical_tamanho_4(void);
+void teste_move_peca_para_esquerda_vertical_tamanho_5(void);
+void teste_move_peca_para_esquerda_ate_borda_vertical_tamanho_3(void);
+void teste_move_peca_para_esquerda_ate_borda_vertical_tamanho_4(void);
+void teste_move_peca_para_esquerda_ate_borda_vertical_tamanho_5(void);
+void teste_move_peca_para_baixo_horizontal_tamanho_3(void);
+void teste_move_peca_para_baixo_horizontal_tamanho_4(void);
+void teste_move_peca_para_baixo_horizontal_tamanho_5(void);
+void teste_move_peca_para_baixo_ate_borda_horizontal_tamanho_3(void);
+void teste_move_peca_para_baixo_ate_borda_horizontal_tamanho_4(void);
+void teste_move_peca_para_baixo_ate_borda_horizontal_tamanho_5(void);
+void teste_move_peca_para_direita_horizontal_tamanho_3(void);
+void teste_move_peca_para_direita_horizontal_tamanho_4(void);
+void teste_move_peca_para_direita_horizontal_tamanho_5(void);
+void teste_move_peca_para_direita_ate_borda_horizontal_tamanho_3(void);
+void teste_move_peca_para_direita_ate_borda_horizontal_tamanho_4(void);
+void teste_move_peca_para_direita_ate_borda_horizontal_tamanho_5(void);
+void teste_move_peca_para_baixo_vertical_tamanho_3(void);
+void teste_move_peca_para_baixo_vertical_tamanho_4(void);
+void teste_move_peca_para_baixo_vertical_tamanho_5(void);
+void teste_move_peca_para_baixo_ate_borda_vertical_tamanho_3(void);
+void teste_move_peca_para_baixo_ate_borda_vertical_tamanho_4(void);
+void teste_move_peca_para_baixo_ate_borda_vertical_tamanho_5(void);
+void teste_move_peca_para_direita_vertical_tamanho_3(void);
+void teste_move_peca_para_direita_vertical_tamanho_4(void);
+void teste_move_peca_para_direita_vertical_tamanho_5(void);
+void teste_move_peca_para_direita_ate_borda_vertical_tamanho_3(void);
+void teste_move_peca_para_direita_ate_borda_vertical_tamanho_4(void);
+void teste_move_peca_para_direita_ate_borda_vertical_tamanho_5(void);
+
+#endif

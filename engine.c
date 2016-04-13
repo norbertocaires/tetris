@@ -27,7 +27,6 @@ void finaliza_ncurses(){
 *
 */
 int pega_input(){
-
 	return getchar();
 }
 /*
@@ -133,7 +132,7 @@ void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 		tabuleiro[peca->pos_linha][peca->pos_coluna] = 0;
 	}
 	if(peca->tipo == RETA_HORIZONTAL){
-		if(peca->pos_linha  > NUM_LINHAS-1){
+		if(peca->pos_linha  >= NUM_LINHAS-1){
 			return;
 		}
 		int coluna;

@@ -1,6 +1,3 @@
-/**
- * O código deste módulo está totalmente desatualizado. Está como o exemplo passado em sala pela professora.
- */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,16 +10,14 @@
 #include "CUnit/Basic.h"
 #include "pecas.h"
 
-
 void teste_gera_peca(){
 
 
   PECA* peca = malloc(sizeof(PECA));
   int passou,i;
-  passou = VERDADEIRO;
 
   for(i=0;i<10;i++){
-
+	passou = VERDADEIRO;
   	peca = gera_peca();
 
   	if(peca->tipo != RETA_VERTICAL && peca->tipo != RETA_HORIZONTAL){
@@ -38,9 +33,8 @@ void teste_gera_peca(){
   	if(peca->cor<1 || peca->cor>7){
 		passou = FALSO;
 	}
+	CU_ASSERT_TRUE(passou);
   }
-
-  CU_ASSERT_TRUE(passou);
 }
 
 void teste_gera_tamanho_peca(){
@@ -117,10 +111,52 @@ void teste_gera_cor_peca(){
 
 	cor_peca = gera_cor_peca();
 
-	if(cor_peca<1 || cor_peca>7)
+	if(cor_peca<3 || cor_peca>7)
 		passou = FALSO;
 
 	CU_ASSERT_TRUE(passou);
+}
+
+/**********************************************************/
+/*Testa de a inicialização de lista é feita corretamente  */
+/**********************************************************/
+void teste_inicia_lista_pecas(void){
+	PECAS lista;
+	inicializaLista(&lista);
+	CU_ASSERT_TRUE( lista.primeiro == NULL );
+	CU_ASSERT_TRUE( lista.ultimo == NULL );
+	CU_ASSERT_TRUE( lista.tamanho == 0 );
+}
+
+/*****************************************************/
+/*Testa a insercao de 1 elemento em uma lista        */
+/*****************************************************/
+void teste_adiciona_na_lista(void){
+	PECAS lista;
+	PECA* peca =  gera_peca();
+	inicializaLista(&lista);
+	adicionaPecaLista(&lista, peca);
+	CU_ASSERT_TRUE( lista.primeiro == peca );
+	CU_ASSERT_TRUE( lista.ultimo == peca );
+	CU_ASSERT_TRUE( lista.tamanho == 1 );
+}
+
+/****************************************************/
+/*Testa a insercao de 60 elementos na lista         */
+/****************************************************/
+void teste_adiciona_60_pecas_na_lista(void){
+	PECAS lista;
+	inicializaLista(&lista);
+	int i;
+	PECA* peca_primeira = gera_peca();
+	adicionaPecaLista(&lista, peca_primeira);
+	for(i=2;i<=60;i++){
+		PECA* peca = gera_peca();
+		adicionaPecaLista(&lista, peca);
+		CU_ASSERT_TRUE( lista.primeiro == peca_primeira );
+		CU_ASSERT_TRUE( lista.ultimo == peca );
+		CU_ASSERT_TRUE( lista.tamanho == i );
+	}
 }
 
 void  adicionar_suite(void){
@@ -135,6 +171,11 @@ void  adicionar_suite(void){
 	CU_ADD_TEST(suite, teste_gera_tipo_peca);
 	CU_ADD_TEST(suite, teste_gera_posicao_peca);
 	CU_ADD_TEST(suite, teste_gera_cor_peca);
+	
+	CU_ADD_TEST(suite, teste_inicia_lista_pecas);
+	CU_ADD_TEST(suite, teste_adiciona_na_lista);
+	CU_ADD_TEST(suite, teste_adiciona_60_pecas_na_lista);
+
 }
 
 int rodar_teste_pecas(){
