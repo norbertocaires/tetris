@@ -38,6 +38,21 @@ PECA* gera_peca_vertical(int tamanho){
 	return peca;
 }
 
+/***********************************************************/
+/*Testa função que ferifica fim de jogo                    */
+/***********************************************************/
+void testa_fim_de_jogo(void){
+	memset(tabuleiro, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	CU_ASSERT_TRUE( verifica_fim_de_jogo(tabuleiro) == 1 );
+
+	int coluna;
+	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
+		memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+		tabuleiro[5][coluna] = 3;
+		CU_ASSERT_TRUE( verifica_fim_de_jogo(tabuleiro) == 1 );
+	}
+}
+
 
 /***********************************************************/
 /*Testa função que pontua a cada linha preenchida          */
@@ -754,6 +769,8 @@ void  adicionar_suite(void){
 	suite = CU_add_suite("Testes modulo engine, pontos",NULL,NULL);
 	CU_ADD_TEST(suite, testa_pontua);
 
+	suite = CU_add_suite("Testes modulo engine, fim de jogo",NULL,NULL);
+	CU_ADD_TEST(suite, testa_fim_de_jogo);
 
 }
 

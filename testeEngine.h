@@ -49,5 +49,6 @@ void teste_move_peca_para_direita_vertical_tamanho_5(void);
 void teste_move_peca_para_direita_ate_borda_vertical_tamanho_3(void);
 void teste_move_peca_para_direita_ate_borda_vertical_tamanho_4(void);
 void teste_move_peca_para_direita_ate_borda_vertical_tamanho_5(void);
+void testa_fim_de_jogo(void);
 
 #endif
