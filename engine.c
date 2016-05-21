@@ -26,7 +26,7 @@ void finaliza_ncurses(){
 * Pega entrada no usuario. 
 *
 */
-int pega_input(){
+char pega_input(){
 	return getchar();
 }
 /*
@@ -54,8 +54,9 @@ void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 */
 void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 	if(peca->tipo == RETA_VERTICAL){
-		if(peca->pos_coluna == 0)
+		if(peca->pos_coluna == 0){
 			return;
+		}
 		int linha;
 		for(linha = peca->pos_linha; linha< peca->tamanho + peca->pos_linha; linha++){
 			if(tabuleiro[linha][peca->pos_coluna-1] != 0){
@@ -124,10 +125,12 @@ void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 */
 void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 	if(peca->tipo == RETA_VERTICAL){
-		if(peca->pos_linha + peca->tamanho >= NUM_LINHAS)
+		if(peca->pos_linha + peca->tamanho >= NUM_LINHAS){
 			return;
-		if(tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] != 0)
+		}
+		if(tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] != 0){
 			return;
+		}
 		tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] = tabuleiro[peca->pos_linha][peca->pos_coluna];
 		tabuleiro[peca->pos_linha][peca->pos_coluna] = 0;
 	}
@@ -155,6 +158,9 @@ void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 */
 
 void verifica_peca_em_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+	if(peca->status == FIXA){
+		return;
+	}
 	if(peca->tipo == RETA_VERTICAL){
 		if(peca->pos_linha + peca->tamanho >= NUM_LINHAS)
 			peca->status = FIXA;

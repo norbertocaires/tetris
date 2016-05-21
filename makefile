@@ -1,7 +1,7 @@
 all :	programa testePecas testeEngine clear
 
 programa: engine.o tela.o pecas.o
-	gcc main.c engine.o tela.o pecas.o -o tetris -lncurses
+	gcc main.c engine.o tela.o pecas.o -o tetris -lncurses -lpthread
 
 testePecas: testePecas.o pecas.o
 	gcc -I./CUnit -L./CUnit testePecas.o pecas.o -lcunit -o testePecas -lncurses
