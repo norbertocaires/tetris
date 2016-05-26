@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include "parametros.h"
 #include "pecas.h"
+#include "placar.h"
 
 void imprime_borda_tela(){
 	border(0, 0, 0, 0, 0, 0, 0, 0);
@@ -30,7 +31,6 @@ void imprime_tela_inicial(){
 	printw("...::: BEM VINDO AO TETRIS :::...");
 	move(6,3);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA INICIAR O JOGO :::...");
-	getch();
 	getch();
 	attrset(COLOR_PAIR(11));
 	for (i=1;i<(LINES-1);i++){
@@ -169,5 +169,16 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	move(LINES-3,10);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA FINALIZAR :::...");
-	getch();
+	getch(); getch();
+
+		attrset(COLOR_PAIR(9));
+
+	for (i=1;i<(LINES-1);i++){
+		for(j=1;j<(COLS-1);j++){
+			mvaddch(i, j,'A');
+		}
+	}
+
+	attrset(COLOR_PAIR(10));
+	getch(); getch();
 }
