@@ -2,7 +2,11 @@
 Relatório de descrição das tarefas detalhadas que cada	membro	realizou:
 
 Andrew Yuri Mata
-
+- Versão inicial do módulo placar - 24/05/16 - 2 horas
 
 Norberto Luz Caires Junior
  - Adicionado movimento de gravidade de 1 segundo 21/05/2016 - 4 horas de trabalho
+
+Programação em pares
+ - Inclusão dos novos tipos de peça 25/05/2016 - 2 horas
+ - Implementação da queda peças do tipo "Z" 25/05/2016 - 1 hora
