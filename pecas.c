@@ -6,7 +6,11 @@
 
 /**
 * Função que retorna um parâmetro do tipo PECA, aleatório, gerando seu tipo e tamanho.
-*
+*	
+* Posicoes: 0 - Inicial
+*           1 - 90 graus
+*			2 - 180 graus	
+*			3- 270 graus
 **/
 
 PECA* gera_peca(){
@@ -19,12 +23,13 @@ PECA* gera_peca(){
    gera_posicao_peca(peca);
    peca->cor = gera_cor_peca();
    peca->status = EM_JOGO;
+   peca->rotacao = 1;
    return peca;
 }
 
 
 /**
-* Função que gera, aleatóriamente o tamanho da peça. Nessa versão a peça terá entre os tamanhos 3 e 5.
+* Função que gera, aleatóriamente o tamanho da peças retas. Nessa versão a peça terá entre os tamanhos 3 e 5.
 *
 */
 
@@ -60,7 +65,6 @@ int gera_cor_peca(){
 * erro na geração, será retornado o número 99.
 *
 */
-
 int gera_tipo_peca(){
 	int tipo_peca = rand()%QTD_PECAS;
 
@@ -69,6 +73,14 @@ int gera_tipo_peca(){
 			return RETA_VERTICAL;
 		case 1:
 			return RETA_HORIZONTAL;
+		case 2:
+			return PECA_Z;
+		case 3:
+			return PECA_T ;
+		case 4:	
+			return PECA_QUADRADO;
+		case 5:	
+			return PECA_L;
 		default:
 			return 99;
 	}
@@ -81,17 +93,22 @@ int gera_tipo_peca(){
 */
 
 void gera_posicao_peca(PECA* peca){
-	if(peca->tipo == RETA_VERTICAL){
-		peca->pos_linha = 0;
-		peca->pos_coluna = 13;
-	}
-	if(peca->tipo == RETA_HORIZONTAL){
-		peca->pos_linha = 0;
-		if(peca->tamanho == 3)
-			peca->pos_coluna = 13 - 1;
-		else
-			peca->pos_coluna = 13 - 2;
-	}
+	peca->pos_linha = 0;
+	switch(peca->tipo){
+
+		case RETA_VERTICAL:
+			peca->pos_coluna = 13;
+			break;
+		case RETA_HORIZONTAL:
+			if(peca->tamanho == 3)
+				peca->pos_coluna = 13 - 1;
+			else
+				peca->pos_coluna = 13 - 2;
+			break;
+		default:
+			peca->pos_coluna = 13;
+			break;		
+	}		
 }
 
 /**
@@ -106,6 +123,7 @@ PECA* faz_copia_de_peca(PECA* peca){
 	copia->status = peca->status;
 	copia->cor = peca->cor;
 	copia->qtd=1;
+	copia->rotacao = peca->rotacao;
 	return copia;
 }
 
@@ -113,6 +131,7 @@ PECA* faz_copia_de_peca(PECA* peca){
 * Função que gera lista de peças e com a quantidade que cada 
 * peca apareceu no jogo;
 **/
+
 void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 	if(pecas->primeiro == NULL)
 		return;

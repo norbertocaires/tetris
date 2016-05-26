@@ -5,9 +5,14 @@
 /** Inicio das constates que modelarão os tipos de peças */
 #define RETA_VERTICAL 1
 #define RETA_HORIZONTAL 2
+#define PECA_Z 3
+#define PECA_T 4
+#define PECA_QUADRADO 5
+#define PECA_L 6
+
 /** Fim das constates que modelarão os tipos de peças */
 
-#define QTD_PECAS 2 /** Constante que indica a quantidade de tipos de peças que podem existir no jogo*/
+#define QTD_PECAS 6 /** Constante que indica a quantidade de tipos de peças que podem existir no jogo*/
 
 /** Inicio das constates que modelarão os status das peças */
 
@@ -16,7 +21,7 @@
 
 /** Fim das constates que modelarão os status peças */
 
-/** Início das constatnes que modelarão o tamanho máximo e mínimo que as peças poderão ter.*/
+/** Início das constatnes que modelarão o tamanho máximo e mínimo que as peças retas poderão ter.*/
 
 #define TAM_PECA_MAX 5
 #define TAM_PECA_MIN 3
@@ -33,6 +38,7 @@ struct peca{
     int status;
     int cor;
     int qtd;
+    int rotacao;
     struct peca *proximo;
 };
 typedef struct peca PECA;

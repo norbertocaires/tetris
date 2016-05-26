@@ -34,18 +34,53 @@ char pega_input(){
 *
 */
 void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
-	if(peca->tipo == RETA_VERTICAL){
-		int linha;
-		for(linha = 0; linha< peca->tamanho; linha++){
-			tabuleiro[linha][peca->pos_coluna] = peca->cor;
-		}
+	int coluna;
+	int linha;
+	switch(peca->tipo){
+		case RETA_VERTICAL:
+			for(linha = 0; linha< peca->tamanho; linha++){
+				tabuleiro[linha][peca->pos_coluna] = peca->cor;
+			}
+			break;
+		case RETA_HORIZONTAL:
+			for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
+				tabuleiro[peca->pos_linha][coluna] = peca->cor;
+			}
+			break;
+		case PECA_Z:
+			tabuleiro[0][peca->pos_coluna-1] = peca->cor;
+			for(linha = 0; linha< 3; linha++){
+				tabuleiro[linha][peca->pos_coluna] = peca->cor;
+			}
+			tabuleiro[2][peca->pos_coluna+1] = peca->cor;
+			break;
+		case PECA_T:
+			for(coluna = 11; coluna< 16; coluna++){
+				tabuleiro[0][coluna] = peca->cor;
+			}
+			for(linha = 0; linha< 3; linha++){
+				tabuleiro[linha][peca->pos_coluna] = peca->cor;
+			}
+			break;
+		case PECA_QUADRADO:
+			for(linha = 0; linha< 2; linha++){
+				tabuleiro[linha][peca->pos_coluna-1] = peca->cor;
+				tabuleiro[linha][peca->pos_coluna] = peca->cor;
+			}
+			break;
+		case PECA_L:
+			for(coluna = peca->pos_coluna-1; coluna<= peca->pos_coluna+1; coluna++){
+				tabuleiro[peca->pos_linha+2][coluna] = peca->cor;
+			}
+			for(linha = 0; linha< 2; linha++){
+				tabuleiro[linha][peca->pos_coluna-1] = peca->cor;
+			}
+
+			break;
+		default:
+			break;
 	}
-	if(peca->tipo == RETA_HORIZONTAL){
-		int coluna;
-		for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-			tabuleiro[peca->pos_linha][coluna] = peca->cor;
-		}
-	}
+
 }
 
 /*
@@ -68,6 +103,7 @@ void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca)
 			tabuleiro[linha][peca->pos_coluna] = 0;
 
 		}
+		peca->pos_coluna--;
 	}
 	if(peca->tipo == RETA_HORIZONTAL){
 		if(peca->pos_coluna == 0){
@@ -79,8 +115,8 @@ void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca)
 		}else{
 			return;
 		}
+		peca->pos_coluna--;
 	}
-	peca->pos_coluna--;
 }
 
 /*
@@ -103,6 +139,7 @@ void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 			tabuleiro[linha][peca->pos_coluna] = 0;
 
 		}
+		peca->pos_coluna++;
 	}
 	if(peca->tipo == RETA_HORIZONTAL){
 		if(peca->pos_coluna + peca->tamanho > NUM_COLUNAS-1){
@@ -115,8 +152,8 @@ void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 		}else{
 			return;
 		}
+		peca->pos_coluna++;
 	}
-	peca->pos_coluna++;
 }
 
 /*
@@ -124,32 +161,78 @@ void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 *
 */
 void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
-	if(peca->tipo == RETA_VERTICAL){
-		if(peca->pos_linha + peca->tamanho >= NUM_LINHAS){
-			return;
-		}
-		if(tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] != 0){
-			return;
-		}
-		tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] = tabuleiro[peca->pos_linha][peca->pos_coluna];
-		tabuleiro[peca->pos_linha][peca->pos_coluna] = 0;
-	}
-	if(peca->tipo == RETA_HORIZONTAL){
-		if(peca->pos_linha  >= NUM_LINHAS-1){
-			return;
-		}
-		int coluna;
-		for(coluna = peca->pos_coluna; coluna < peca->pos_coluna + peca->tamanho; coluna++){
-			if(tabuleiro[peca->pos_linha+1][coluna] != 0){
+	
+
+	switch (peca->tipo){
+
+		case RETA_VERTICAL:
+			if(peca->pos_linha + peca->tamanho >= NUM_LINHAS){
 				return;
 			}
-		}
-		for(coluna = peca->pos_coluna; coluna < peca->pos_coluna + peca->tamanho; coluna++){
-			tabuleiro[peca->pos_linha + 1][coluna] = tabuleiro[peca->pos_linha][coluna];
-			tabuleiro[peca->pos_linha][coluna] = 0;
-		}
-	}
+			if(tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] != 0){
+				return;
+			}
+			tabuleiro[peca->pos_linha + peca->tamanho][peca->pos_coluna] = tabuleiro[peca->pos_linha][peca->pos_coluna];
+			tabuleiro[peca->pos_linha][peca->pos_coluna] = 0;			
+			break;
+		case RETA_HORIZONTAL:
+			if(peca->pos_linha  >= NUM_LINHAS-1){
+				return;
+			}
+			int coluna;
+			for(coluna = peca->pos_coluna; coluna < peca->pos_coluna + peca->tamanho; coluna++){
+				if(tabuleiro[peca->pos_linha+1][coluna] != 0){
+					return;
+				}
+			}
+			for(coluna = peca->pos_coluna; coluna < peca->pos_coluna + peca->tamanho; coluna++){
+				tabuleiro[peca->pos_linha + 1][coluna] = tabuleiro[peca->pos_linha][coluna];
+				tabuleiro[peca->pos_linha][coluna] = 0;
+			}			
+
+			break;
+		case PECA_Z:
+			if(peca->pos_linha + 3 >= NUM_LINHAS && peca->rotacao== 1){//testa se fim do tabuleiro
+				return;
+			}
+			if(peca->pos_linha + 2 >= NUM_LINHAS && peca->rotacao == 2){//testa se fim do tabuleiro
+				return;
+			}
+			if(peca->rotacao == 1){
+				if(tabuleiro[peca->pos_linha+1][peca->pos_coluna-1]!=0){
+					return;
+				}
+				if(tabuleiro[peca->pos_linha+3][peca->pos_coluna] != 0 || tabuleiro[peca->pos_linha+3][peca->pos_coluna+1] != 0){
+					return;
+				}
+				tabuleiro[peca->pos_linha + 3][peca->pos_coluna] = tabuleiro[peca->pos_linha][peca->pos_coluna];
+				tabuleiro[peca->pos_linha][peca->pos_coluna] = 0;
+				tabuleiro[peca->pos_linha+1][peca->pos_coluna -1] = tabuleiro[peca->pos_linha][peca->pos_coluna -1]; 	
+				tabuleiro[peca->pos_linha][peca->pos_coluna -1] = 0;
+				tabuleiro[peca->pos_linha + 3][peca->pos_coluna+1] = tabuleiro[peca->pos_linha+2][peca->pos_coluna+1];
+				tabuleiro[peca->pos_linha+2][peca->pos_coluna+1] = 0;
+
+			}else if(peca->rotacao ==2){
+
+			}
+
+
+			break;
+		case PECA_T:
+			
+			break;
+		case PECA_QUADRADO:
+			
+			break;
+		case PECA_L:
+			
+
+			break;
+		default:
+			break;
+	}	
 	peca->pos_linha++;
+
 }
 
 /*

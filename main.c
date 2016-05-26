@@ -71,14 +71,11 @@ int main(){
 	imprime_tela_inicial();
 	imprime_borda_tabuleiro();
 	imprime_tela_status(pontuacao);
-	pega_input();
-
 
 	time_t hora_inicio = time(NULL);
 	peca = gera_peca();
 	insere_peca_tabuleiro(tabuleiro, peca);
 	imprime_tabuleiro_sem_borda(tabuleiro);
-
 	adicionaPecaLista(&pecas, peca);
 	pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
 
