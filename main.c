@@ -77,7 +77,7 @@ int main(){
 	insere_peca_tabuleiro(tabuleiro, peca);
 	imprime_tabuleiro_sem_borda(tabuleiro);
 	adicionaPecaLista(&pecas, peca);
-	pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
+	//pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
 
 	while(fim_jogo == 0){
 		while(peca->status == EM_JOGO){
@@ -95,6 +95,11 @@ int main(){
 			if(input == 'B'){//28
 				pthread_mutex_lock(&lock);
 				move_peca_para_baixo(tabuleiro, peca);
+				pthread_mutex_unlock(&lock);
+			}
+			if(input == 'A'){//28
+				pthread_mutex_lock(&lock);
+				gira_peca_noventa_graus(tabuleiro, peca);
 				pthread_mutex_unlock(&lock);
 			}
 			pthread_mutex_lock(&lock);

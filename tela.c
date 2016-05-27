@@ -136,12 +136,24 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	printw("QUANTIDADE DE CADA PECA:");
 	while(peca != NULL){
 		move(linha,10);
-		if(peca->tipo == RETA_VERTICAL){
-			printw("| RETA VERTICAL\t| TAMANHO: %i \t| QUANTIDADE: %i", peca->tamanho, peca->qtd );
+		if(peca->tipo == 10){
+			printw("| RETA\t| QUANTIDADE: %i", peca->qtd );
 		}
-		if(peca->tipo == RETA_HORIZONTAL){
-			printw("| RETA HORIZONTAL\t| TAMANHO: %i \t| QUANTIDADE: %i", peca->tamanho, peca->qtd );
+		if(peca->tipo == PECA_Z){
+			printw("| PECA Z\t| QUANTIDADE: %i", peca->qtd );
 		}
+		if(peca->tipo == PECA_T){
+			printw("| PECA T\t| QUANTIDADE: %i", peca->qtd );
+		}
+
+		if(peca->tipo == PECA_QUADRADO){
+			printw("| PECA QUADRADO\t| QUANTIDADE: %i", peca->qtd );
+		}
+
+		if(peca->tipo == PECA_L){
+			printw("| PECA L\t| QUANTIDADE: %i", peca->qtd );
+		}
+
 		linha += 1;
 		peca = peca->proximo;
 	}

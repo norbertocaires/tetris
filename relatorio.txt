@@ -5,7 +5,11 @@ Andrew Yuri Mata
 - Versão inicial do módulo placar - 24/05/16 - 2 horas
 
 Norberto Luz Caires Junior
- - Adicionado movimento de gravidade de 1 segundo 21/05/2016 - 4 horas de trabalho
+ - Adicionado movimento de gravidade de 1 segundo 21/05/2016 - 4 horas
+ - Adicionado movimento para direita em todas as peças 26/05/2016 - 2 horas
+ - Adicionado movimento para esquerda em todas as peças 26/05/2016 - 2 horas
+ - Adicionado movimento de queda em todas as peças 26/05/2016 - 2 horas
+ - Adicionado movimento de rotação em todas as peças 26/05/2016 - 6 horas
 
 Programação em pares
  - Inclusão dos novos tipos de peça 25/05/2016 - 2 horas

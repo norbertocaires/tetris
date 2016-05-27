@@ -9,8 +9,8 @@
 *	
 * Posicoes: 0 - Inicial
 *           1 - 90 graus
-*			2 - 180 graus	
-*			3- 270 graus
+*	    2 - 180 graus	
+*	    3 - 270 graus
 **/
 
 PECA* gera_peca(){
@@ -18,6 +18,7 @@ PECA* gera_peca(){
    srand((unsigned)time(NULL) );
    PECA* peca = malloc(sizeof(PECA));
 
+   peca->qtd = 0;
    peca->tipo = gera_tipo_peca();
    peca->tamanho = gera_tamanho_peca();
    gera_posicao_peca(peca);
@@ -97,16 +98,18 @@ void gera_posicao_peca(PECA* peca){
 	switch(peca->tipo){
 
 		case RETA_VERTICAL:
-			peca->pos_coluna = 13;
+			peca->pos_coluna = 12;
 			break;
 		case RETA_HORIZONTAL:
 			if(peca->tamanho == 3)
-				peca->pos_coluna = 13 - 1;
-			else
-				peca->pos_coluna = 13 - 2;
+				peca->pos_coluna = 12 - 1;
+			if(peca->tamanho == 4)
+				peca->pos_coluna = 12 - 1;
+			if(peca->tamanho == 5)
+				peca->pos_coluna = 12 - 2;
 			break;
 		default:
-			peca->pos_coluna = 13;
+			peca->pos_coluna = 12;
 			break;		
 	}		
 }
@@ -122,7 +125,7 @@ PECA* faz_copia_de_peca(PECA* peca){
 	copia->pos_coluna = peca->pos_coluna;
 	copia->status = peca->status;
 	copia->cor = peca->cor;
-	copia->qtd=1;
+	copia->qtd = 1;
 	copia->rotacao = peca->rotacao;
 	return copia;
 }
@@ -139,19 +142,24 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 
 	PECA *peca = pecas->primeiro;
 	PECA *peca_qtd;
+	PECA *copia;
 	while(peca != NULL){
 		peca_qtd = nova_lista_qtd->primeiro;
-		add =0;
+		add = 1;
+		copia = faz_copia_de_peca(peca);
 		while(peca_qtd != NULL){
-			if(peca->tipo == peca_qtd->tipo && peca->tamanho == peca_qtd->tamanho ){
+			if(copia->tipo == RETA_VERTICAL || copia->tipo == RETA_HORIZONTAL)
+				copia->tipo = 10;
+			if(peca_qtd->tipo == RETA_VERTICAL || peca_qtd->tipo == RETA_HORIZONTAL)
+				copia->tipo = 10;
+			if(copia->tipo == peca_qtd->tipo ){
 				peca_qtd->qtd ++;
-				add =1;
+				add = 0;
 			}
 			peca_qtd = peca_qtd->proximo;
 		}
-		if(add ==0){
-
-			adicionaPecaLista(nova_lista_qtd, faz_copia_de_peca(peca));
+		if(add == 1){
+			adicionaPecaLista(nova_lista_qtd, copia);
 		}
 		peca = peca->proximo;
 	}
