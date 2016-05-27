@@ -147,7 +147,7 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 		}
 
 		if(peca->tipo == PECA_QUADRADO){
-			printw("| PECA QUADRADO\t| QUANTIDADE: %i", peca->qtd );
+			printw("| QUADRADO\t| QUANTIDADE: %i", peca->qtd );
 		}
 
 		if(peca->tipo == PECA_L){

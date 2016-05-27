@@ -329,8 +329,8 @@ void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca)
 			}
 			if(peca->rotacao == 3){
 				if(	tabuleiro[peca->pos_linha][peca->pos_coluna-2] != 0 ||
-					tabuleiro[peca->pos_linha+1][peca->pos_coluna-2] != 0 || 
-					tabuleiro[peca->pos_linha+2][peca->pos_coluna-2] != 0){
+					tabuleiro[peca->pos_linha+1][peca->pos_coluna] != 0 || 
+					tabuleiro[peca->pos_linha+2][peca->pos_coluna] != 0){
 					return;
 				}
 				tabuleiro[peca->pos_linha][peca->pos_coluna-2] = peca->cor;

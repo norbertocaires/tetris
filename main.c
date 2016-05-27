@@ -77,7 +77,7 @@ int main(){
 	insere_peca_tabuleiro(tabuleiro, peca);
 	imprime_tabuleiro_sem_borda(tabuleiro);
 	adicionaPecaLista(&pecas, peca);
-	//pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
+	pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
 
 	while(fim_jogo == 0){
 		while(peca->status == EM_JOGO){

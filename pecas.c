@@ -151,7 +151,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 			if(copia->tipo == RETA_VERTICAL || copia->tipo == RETA_HORIZONTAL)
 				copia->tipo = 10;
 			if(peca_qtd->tipo == RETA_VERTICAL || peca_qtd->tipo == RETA_HORIZONTAL)
-				copia->tipo = 10;
+				peca_qtd->tipo = 10;
 			if(copia->tipo == peca_qtd->tipo ){
 				peca_qtd->qtd ++;
 				add = 0;
