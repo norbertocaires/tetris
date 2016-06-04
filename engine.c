@@ -2,38 +2,38 @@
 #include "pecas.h"
 #include "parametros.h"
 
-void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha);
+extern void desce_todas_linhas(int tabuleiro[][NUM_COLUNAS],int linha);
 
 /*
 * Finaliza ncurses. 
 *
 */
-void inicia_ncurses(){
-	initscr();
-	start_color();
-	curs_set(FALSE);
+extern void inicia_ncurses(){
+	(void) initscr();
+	(void) start_color();
+	(void) curs_set(FALSE);
 }
 
 /*
 * Inicializa ncurses. 
 *
 */
-void finaliza_ncurses(){	
-	endwin();
+extern void finaliza_ncurses(){	
+	(void) endwin();
 }
 
 /*
 * Pega entrada no usuario. 
 *
 */
-char pega_input(){
-	return getchar();
+extern char pega_input(){
+	return (char) getchar();
 }
 /*
 * Desenha peça atual no tabuleiro. 
 *
 */
-void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+extern void insere_peca_tabuleiro(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int coluna;
 	int linha;
 	switch(peca->tipo){
@@ -87,14 +87,14 @@ void insere_peca_tabuleiro(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 * Faz o movimento da peça atual para esquerda. 
 *
 */
-void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
-
+extern void move_peca_para_esquerda(int tabuleiro[][NUM_COLUNAS], PECA* peca){
+	int linha;
 	switch(peca->tipo){
 		case RETA_VERTICAL:
 			if(peca->pos_coluna == 0){
 				return;
 			}
-			int linha;
+
 			for(linha = peca->pos_linha; linha< peca->tamanho + peca->pos_linha; linha++){
 				if(tabuleiro[linha][peca->pos_coluna-1] != 0){
 					return;
@@ -375,15 +375,14 @@ void move_peca_para_esquerda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca)
 * Faz o movimento da peça atual para direita. 
 *
 */
-void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
-
+extern void move_peca_para_direita(int tabuleiro[][NUM_COLUNAS], PECA* peca){
+	int linha;
 
 	switch(peca->tipo){
 		case RETA_VERTICAL:
 			if(peca->pos_coluna > NUM_COLUNAS-2){
 				return;
 			}
-			int linha;
 			for(linha = peca->pos_linha; linha< peca->tamanho+peca->pos_linha; linha++){
 				if(tabuleiro[linha][peca->pos_coluna+1] != 0){
 					return;
@@ -669,7 +668,7 @@ void move_peca_para_direita(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 * Faz o movimento da peça atual para baixo. 
 *
 */
-void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+extern void move_peca_para_baixo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int coluna;
 	switch (peca->tipo){
 
@@ -948,7 +947,7 @@ void move_peca_para_baixo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 
 }
 
-void gira_peca_noventa_graus(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+extern void gira_peca_noventa_graus(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int linha = 0;
 	int coluna = 0;
 	switch (peca->tipo){
@@ -1350,7 +1349,8 @@ void gira_peca_noventa_graus(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca)
 * Caso verdadeiro, a peça fica FIXA.
 */
 
-void verifica_peca_em_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
+extern void verifica_peca_em_jogo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
+	int coluna;
 	if(peca->status == FIXA){
 		return;
 	}
@@ -1366,7 +1366,6 @@ void verifica_peca_em_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 			if(peca->pos_linha + 1  >= NUM_LINHAS){
 				peca->status = FIXA;
 			}
-			int coluna;
 			for(coluna = peca->pos_coluna; coluna < peca->pos_coluna + peca->tamanho; coluna++){
 				if(tabuleiro[peca->pos_linha+1][coluna] != 0){
 					peca->status = FIXA;
@@ -1551,7 +1550,7 @@ void verifica_peca_em_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS], PECA* peca){
 *
 */
 
-int verifica_fim_de_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+extern int verifica_fim_de_jogo(int tabuleiro[][NUM_COLUNAS]){
 	int coluna;
 	for(coluna = 0; coluna < NUM_COLUNAS; coluna++){
 		if(tabuleiro[5][coluna] != 0){
@@ -1566,7 +1565,7 @@ int verifica_fim_de_jogo(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 */
 
 
-int pontua(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+extern int pontua(int tabuleiro[][NUM_COLUNAS]){
 
 	int linha,coluna,contador_peca=0,pontuacao = 0 ;
 
@@ -1593,7 +1592,7 @@ int pontua(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 *   a "limpeza" poderá ser visualizada.
 *
 */
-void limpa_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+extern void limpa_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 	int coluna;
 	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
 		tabuleiro[linha][coluna] = 0;
@@ -1607,7 +1606,7 @@ void limpa_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 */
 
 
-void desce_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+extern void desce_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 
 	int coluna;
 
@@ -1617,7 +1616,7 @@ void desce_linha(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
 
 }
 
-void desce_todas_linhas(int tabuleiro[NUM_LINHAS][NUM_COLUNAS],int linha){
+extern void desce_todas_linhas(int tabuleiro[][NUM_COLUNAS],int linha){
 
 	int i=0;
 	limpa_linha(tabuleiro,linha);

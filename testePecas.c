@@ -66,15 +66,19 @@ void teste_gera_tipo_peca(){
 
 }
 void teste_gera_posicao_peca(){
+    PECA* peca1;
+    PECA* peca2;
+    PECA* peca3;
+    PECA* peca4;
 
 	int passou;
 	passou = VERDADEIRO;
 
  	srand( (unsigned)time(NULL) );
-    PECA* peca1 = malloc(sizeof(PECA));
-    PECA* peca2 = malloc(sizeof(PECA));
-    PECA* peca3 = malloc(sizeof(PECA));
-    PECA* peca4 = malloc(sizeof(PECA));
+    peca1 = malloc(sizeof(PECA));
+    peca2 = malloc(sizeof(PECA));
+    peca3 = malloc(sizeof(PECA));
+    peca4 = malloc(sizeof(PECA));
 
     peca1->tipo = RETA_VERTICAL; 
     peca1->tamanho = 4;
@@ -146,9 +150,10 @@ void teste_adiciona_na_lista(void){
 /****************************************************/
 void teste_adiciona_60_pecas_na_lista(void){
 	PECAS lista;
-	inicializaLista(&lista);
+	PECA* peca_primeira;
 	int i;
-	PECA* peca_primeira = gera_peca();
+	inicializaLista(&lista);
+	peca_primeira = gera_peca();
 	adicionaPecaLista(&lista, peca_primeira);
 	for(i=2;i<=60;i++){
 		PECA* peca = gera_peca();

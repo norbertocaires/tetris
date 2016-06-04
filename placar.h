@@ -31,7 +31,7 @@ struct listaPontuacao{
 
 void inicializaListaPlacar(LISTA_PONTUACAO *listaPontuacao);
 LISTA_PONTUACAO *carrega_placar();
-void atualiza_placar( char nome[TAM_NOME], int pontuacao );
+void atualiza_placar( char nome[], int pontuacao );
 void mostra_placar();   
 
 

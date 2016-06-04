@@ -11,7 +11,7 @@
 #include "pecas.h"
 #include "engine.h"
 
-int tabuleiro[NUM_LINHAS][NUM_COLUNAS];
+int tab[NUM_LINHAS][NUM_COLUNAS];
 
 PECA* gera_peca_horizontal(int tamanho){
 	PECA* peca = malloc(sizeof(PECA));
@@ -24,6 +24,12 @@ PECA* gera_peca_horizontal(int tamanho){
 	peca->tipo = RETA_HORIZONTAL;
 	peca->tamanho = tamanho;
 	peca->cor = 100;
+
+	peca->tamanho = tamanho;
+	peca->rotacao = 0;
+	peca->proximo = NULL;
+	peca->qtd = 0;
+
 	return peca;
 }
 
@@ -35,6 +41,12 @@ PECA* gera_peca_vertical(int tamanho){
 	peca->tipo = RETA_VERTICAL;
 	peca->tamanho = tamanho;
 	peca->cor = 100;
+
+	peca->tamanho = tamanho;
+	peca->rotacao = 0;
+	peca->proximo = NULL;
+	peca->qtd = 0;
+
 	return peca;
 }
 
@@ -42,14 +54,16 @@ PECA* gera_peca_vertical(int tamanho){
 /*Testa função que ferifica fim de jogo                    */
 /***********************************************************/
 void testa_fim_de_jogo(void){
-	memset(tabuleiro, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	CU_ASSERT_TRUE( verifica_fim_de_jogo(tabuleiro) == 1 );
 
 	int coluna;
+
+	memset(tab, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	CU_ASSERT_TRUE( verifica_fim_de_jogo(tab) == 1 );
+
 	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-		memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-		tabuleiro[5][coluna] = 3;
-		CU_ASSERT_TRUE( verifica_fim_de_jogo(tabuleiro) == 1 );
+		memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+		tab[5][coluna] = 3;
+		CU_ASSERT_TRUE( verifica_fim_de_jogo(tab) == 1 );
 	}
 }
 
@@ -58,29 +72,29 @@ void testa_fim_de_jogo(void){
 /*Testa função que pontua a cada linha preenchida          */
 /***********************************************************/
 void testa_pontua(void){
-	memset(tabuleiro, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	CU_ASSERT_TRUE( pontua(tabuleiro) == NUM_LINHAS * 100 );
-
-	memset(tabuleiro, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 	int linha, coluna;
+	memset(tab, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	CU_ASSERT_TRUE( pontua(tab) == NUM_LINHAS * 100 );
+
+	memset(tab, 3, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 	for(linha=0;linha<NUM_LINHAS;linha++){
-		tabuleiro[linha][0] = 0;
+		tab[linha][0] = 0;
 	}
-	CU_ASSERT_TRUE( pontua(tabuleiro) == 0 );
+	CU_ASSERT_TRUE( pontua(tab) == 0 );
 
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 	for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-		tabuleiro[NUM_LINHAS-1][coluna] = 3;
+		tab[NUM_LINHAS-1][coluna] = 3;
 	}
-	CU_ASSERT_TRUE( pontua(tabuleiro) == 100 );
+	CU_ASSERT_TRUE( pontua(tab) == 100 );
 
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 	for(linha=NUM_LINHAS-1;linha>NUM_LINHAS-6;linha--){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			tabuleiro[linha][coluna] = 3;
+			tab[linha][coluna] = 3;
 		}
 	}
-	CU_ASSERT_TRUE( pontua(tabuleiro) == 500 );
+	CU_ASSERT_TRUE( pontua(tab) == 500 );
 
 }
 
@@ -88,19 +102,21 @@ void testa_pontua(void){
 /*Testa a insercao de uma reta HORIZONTAL TAMANHO variavel */
 /***********************************************************/
 void teste_insere_reta_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
+	PECA* peca;
+	int qtd_100, qtd_0;
 	int coluna, linha;
-	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
-	}
+	
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
 
-	int qtd_100 = 0, qtd_0 = 0;
+	insere_peca_tabuleiro(tab,peca);
+	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
+	}
+	qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -108,7 +124,7 @@ void teste_insere_reta_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 void teste_insere_reta_horizontal_tamanho_3(void){
@@ -129,19 +145,23 @@ void teste_insere_reta_horizontal_tamanho_5(void){
 /*Testa a insercao de uma reta VERTICAL TAMANHO varivel  */
 /*********************************************************/
 void teste_insere_reta_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100, qtd_0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	for(linha = 0; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
+	qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -149,7 +169,7 @@ void teste_insere_reta_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -168,21 +188,25 @@ void teste_insere_reta_vertical_tamanho_5(void){
 /*Testa mover esquerda uma reta HORIZONTAL TAMANHO variavel  */
 /*************************************************************/
 void teste_move_peca_para_esquerda_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_esquerda(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_esquerda(tab, peca);
+
+
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
+
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -190,7 +214,7 @@ void teste_move_peca_para_esquerda_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -210,24 +234,28 @@ void teste_move_peca_para_esquerda_horizontal_tamanho_5(void){
 /*Testa mover esquerda até borda uma reta HORIZONTAL TAMANHO variavel  */
 /***********************************************************************/
 void teste_move_peca_para_esquerda_ate_borda_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
+	PECA* peca;
+	int i;
+	int qtd_100 = 0, qtd_0 = 0;
+	int coluna, linha;
 
-	insere_peca_tabuleiro(tabuleiro,peca);
-	int i = 0;
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	while(i<NUM_COLUNAS){
-		move_peca_para_esquerda(tabuleiro, peca);
+		move_peca_para_esquerda(tab, peca);
 		i++;
 	}
-	int coluna, linha;
+
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -235,7 +263,7 @@ void teste_move_peca_para_esquerda_ate_borda_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status = EM_JOGO );
 }
 
@@ -255,21 +283,24 @@ void teste_move_peca_para_esquerda_ate_borda_horizontal_tamanho_5(void){
 /*Testa mover esquerda uma reta VERTICAL TAMANHO vaiavel  */
 /**********************************************************/
 void teste_move_peca_para_esquerda_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_esquerda(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_esquerda(tab, peca);
+
+
 	for(linha = 0; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -277,7 +308,7 @@ void teste_move_peca_para_esquerda_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -298,26 +329,28 @@ void teste_move_peca_para_esquerda_vertical_tamanho_5(void){
 /*Testa mover esquerda ate borda uma reta VERTICAL TAMANHO vaiavel  */
 /********************************************************************/
 void teste_move_peca_para_esquerda_ate_borda_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-
+	PECA* peca;
 	int i =0;
+	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	while(i < NUM_COLUNAS){
-		move_peca_para_esquerda(tabuleiro, peca);
+		move_peca_para_esquerda(tab, peca);
 		i++;
 	}
 
-	int coluna, linha;
 	for(linha = 0; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -325,7 +358,7 @@ void teste_move_peca_para_esquerda_ate_borda_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -345,21 +378,23 @@ void teste_move_peca_para_esquerda_ate_borda_vertical_tamanho_5(void){
 /*Testa mover baixo uma reta HORIZONTAL TAMANHO variavel  */
 /**********************************************************/
 void teste_move_peca_para_baixo_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_baixo(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_baixo(tab, peca);
+
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -367,7 +402,7 @@ void teste_move_peca_para_baixo_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -387,25 +422,28 @@ void teste_move_peca_para_baixo_horizontal_tamanho_5(void){
 /*Testa mover baixo uma reta HORIZONTAL ate borda TAMANHO variavel  */
 /********************************************************************/
 void teste_move_peca_para_baixo_ate_borda_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
+	PECA* peca;
 	int i = 0;
+	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	while(i<NUM_LINHAS){
-		move_peca_para_baixo(tabuleiro, peca);
+		move_peca_para_baixo(tab, peca);
 		i++;
 	}
 
-	int coluna, linha;
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -413,7 +451,7 @@ void teste_move_peca_para_baixo_ate_borda_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == FIXA );
 }
 
@@ -433,21 +471,23 @@ void teste_move_peca_para_baixo_ate_borda_horizontal_tamanho_5(void){
 /*Testa mover direita uma reta HORIZONTAL TAMANHO variavel  */
 /************************************************************/
 void teste_move_peca_para_direita_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_direita(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_direita(tab, peca);
+
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -455,7 +495,7 @@ void teste_move_peca_para_direita_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -475,26 +515,28 @@ void teste_move_peca_para_direita_horizontal_tamanho_5(void){
 /*Testa mover direita uma reta HORIZONTAL ate borda TAMANHO variavel  */
 /**********************************************************************/
 void teste_move_peca_para_direita_ate_borda_horizontal(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_horizontal(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-
+	PECA* peca;
 	int i=0;
+	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_horizontal(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	while(i<NUM_COLUNAS){
-		move_peca_para_direita(tabuleiro, peca);
+		move_peca_para_direita(tab, peca);
 		i++;
 	}
 
-	int coluna, linha;
 	for(coluna = peca->pos_coluna; coluna< peca->tamanho + peca->pos_coluna; coluna++){
-		CU_ASSERT_TRUE( tabuleiro[peca->pos_linha][coluna] == 100 );
+		CU_ASSERT_TRUE( tab[peca->pos_linha][coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -502,7 +544,7 @@ void teste_move_peca_para_direita_ate_borda_horizontal(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -523,21 +565,23 @@ void teste_move_peca_para_direita_ate_borda_horizontal_tamanho_5(void){
 /*Testa mover baixo uma reta VERTICAL TAMANHO variavel  */
 /********************************************************/
 void teste_move_peca_para_baixo_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_baixo(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_baixo(tab, peca);
+
 	for(linha = 1; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -545,7 +589,7 @@ void teste_move_peca_para_baixo_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -566,26 +610,28 @@ void teste_move_peca_para_baixo_vertical_tamanho_5(void){
 /*Testa mover baixo uma reta VERTICAL ate borda TAMANHO variavel  */
 /******************************************************************/
 void teste_move_peca_para_baixo_ate_borda_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	
+	PECA* peca;
 	int i = 0;
+	int qtd_100 = 0, qtd_0 = 0;
+	int coluna, linha;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	
 	while(i< NUM_LINHAS+200){
-		move_peca_para_baixo(tabuleiro, peca);
+		move_peca_para_baixo(tab, peca);
 		i++;
 	}
 
-	int coluna, linha;
 	for(linha = peca->pos_linha; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -593,7 +639,7 @@ void teste_move_peca_para_baixo_ate_borda_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == FIXA );
 }
 
@@ -613,21 +659,23 @@ void teste_move_peca_para_baixo_ate_borda_vertical_tamanho_5(void){
 /*Testa mover direita uma reta VERTICAL TAMANHO variavel  */
 /**********************************************************/
 void teste_move_peca_para_direita_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-	move_peca_para_direita(tabuleiro, peca);
-
+	PECA* peca;
 	int coluna, linha;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+	move_peca_para_direita(tab, peca);
+
 	for(linha = 0; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -635,7 +683,7 @@ void teste_move_peca_para_direita_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 
@@ -655,26 +703,28 @@ void teste_move_peca_para_direita_vertical_tamanho_5(void){
 /*Testa mover direita uma reta VERTICAL ate borda TAMANHO variavel  */
 /********************************************************************/
 void teste_move_peca_para_direita_ate_borda_vertical(int tamanho){
-	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
-	PECA* peca = gera_peca_vertical(tamanho);
-
-	insere_peca_tabuleiro(tabuleiro,peca);
-
+	PECA* peca;
+	int coluna, linha;
 	int i =0;
+	int qtd_100 = 0, qtd_0 = 0;
+
+	memset(tab, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
+	peca = gera_peca_vertical(tamanho);
+
+	insere_peca_tabuleiro(tab,peca);
+
 	while(i < NUM_LINHAS){
-		move_peca_para_direita(tabuleiro, peca);
+		move_peca_para_direita(tab, peca);
 		i++;
 	}
 
-	int coluna, linha;
 	for(linha = 0; linha< peca->tamanho; linha++){
-		CU_ASSERT_TRUE( tabuleiro[linha][peca->pos_coluna] == 100 );
+		CU_ASSERT_TRUE( tab[linha][peca->pos_coluna] == 100 );
 	}
 
-	int qtd_100 = 0, qtd_0 = 0;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			if(tabuleiro[linha][coluna] == 100)
+			if(tab[linha][coluna] == 100)
 				qtd_100++;
 			else
 				qtd_0++;
@@ -682,7 +732,7 @@ void teste_move_peca_para_direita_ate_borda_vertical(int tamanho){
 	}
 	CU_ASSERT_TRUE( qtd_0 == (NUM_LINHAS*NUM_COLUNAS) - tamanho );
 	CU_ASSERT_TRUE( qtd_100 == tamanho );
-	verifica_peca_em_jogo(tabuleiro, peca);
+	verifica_peca_em_jogo(tab, peca);
 	CU_ASSERT_TRUE( peca->status == EM_JOGO );
 }
 

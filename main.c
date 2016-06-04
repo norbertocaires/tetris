@@ -55,12 +55,13 @@ void *move_peca_um_segundo(){
 
 int main(){
 	char input; 
+	PECAS lista_qtd_cada_peca;
+	time_t hora_inicio, hora_final;
 
 	//LISTA DE PECAS
 	inicializaLista(&pecas);
 
 	//LISTA DE QTD PECAS
-	PECAS lista_qtd_cada_peca;
 	inicializaLista(&lista_qtd_cada_peca);
 
 	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
@@ -72,7 +73,7 @@ int main(){
 	imprime_borda_tabuleiro();
 	imprime_tela_status(pontuacao);
 
-	time_t hora_inicio = time(NULL);
+	hora_inicio = time(NULL);
 	peca = gera_peca();
 	insere_peca_tabuleiro(tabuleiro, peca);
 	imprime_tabuleiro_sem_borda(tabuleiro);
@@ -124,7 +125,7 @@ int main(){
 		pthread_mutex_unlock(&lock);
 	}
 	pthread_join(thread, NULL); 
-	time_t hora_final =  time(NULL);
+	hora_final =  time(NULL);
 	
 	gera_lista_de_qtds(&pecas, &lista_qtd_cada_peca);
 	imprime_tela_final(&lista_qtd_cada_peca, pontuacao, hora_inicio, hora_final);

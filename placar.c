@@ -48,15 +48,15 @@ void adicionaListaPontuacao(LISTA_PONTUACAO *listaPontuacao, PONTUACAO *pontuaca
 
 
 LISTA_PONTUACAO *carrega_placar(){
-
-	FILE *parquivo;
-	LISTA_PONTUACAO *listaPontuacao = malloc(sizeof(LISTA_PONTUACAO));
-	inicializaListaPlacar(listaPontuacao);
-
 	char nome[5];
 	int pontos;
 	char data[8];
 	int tempo;
+
+
+	FILE *parquivo;
+	LISTA_PONTUACAO *listaPontuacao = malloc(sizeof(LISTA_PONTUACAO));
+	inicializaListaPlacar(listaPontuacao);
 
 	parquivo = fopen(ARQUIVO_PLACAR,"r");
 	if (!parquivo){
@@ -80,7 +80,7 @@ LISTA_PONTUACAO *carrega_placar(){
 
 
 
-void atualiza_placar( char nome[TAM_NOME], int pontuacao ){
+void atualiza_placar( char nome[], int pontuacao ){
 	
 	LISTA_PONTUACAO *listaPontuacao;
 	listaPontuacao = carrega_placar();

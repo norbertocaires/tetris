@@ -22,7 +22,7 @@ void imprime_tela_inicial(){
 
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
-			mvaddch(i, j,'A');
+			mvaddch(i, j, (chtype) 'A');
 		}
 	}
 
@@ -35,7 +35,7 @@ void imprime_tela_inicial(){
 	attrset(COLOR_PAIR(11));
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
-			mvaddch(i, j,' ');
+			mvaddch(i, j, (chtype) ' ');
 		}
 	}
 	attrset(COLOR_PAIR(12));
@@ -45,21 +45,21 @@ void imprime_borda_tabuleiro(){
 	int linha, coluna;
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		if(linha+5 != 10){
-			mvaddch(linha+POS_L, POS_C-1, '|');
-			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, '|');
+			mvaddch(linha+POS_L, POS_C-1, (chtype) '|');
+			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, (chtype) '|');
 		}else{
-			mvaddch(linha+POS_L, POS_C-1, '*');
-			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, '*');
+			mvaddch(linha+POS_L, POS_C-1, (chtype) '*');
+			mvaddch(linha+POS_L, NUM_COLUNAS+POS_C, (chtype) '*');
 		}
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
-			mvaddch(4, coluna+POS_C, '_');
-			mvaddch(NUM_LINHAS+POS_L, coluna+POS_C, '*');
+			mvaddch(4, coluna+POS_C, (chtype) '_');
+			mvaddch(NUM_LINHAS+POS_L, coluna+POS_C, (chtype) '*');
 		}
 	}
 	refresh();
 }
 
-void imprime_tabuleiro_sem_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
+void imprime_tabuleiro_sem_borda(int tabuleiro[][NUM_COLUNAS]){
 	int linha, coluna;
 /**
 *   Inicialização dos "pairs" que serão utilizados para colorir as peças.
@@ -81,10 +81,10 @@ void imprime_tabuleiro_sem_borda(int tabuleiro[NUM_LINHAS][NUM_COLUNAS]){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
 			if(tabuleiro[linha][coluna]!=0){
 				attrset(COLOR_PAIR(tabuleiro[linha][coluna]));
-				mvaddch(linha+POS_L, coluna+POS_C,' ');
+				mvaddch(linha+POS_L, coluna+POS_C, (chtype) ' ');
 			}else{
 				attrset(COLOR_PAIR(2));
-				mvaddch(linha+POS_L, coluna+POS_C,' ');
+				mvaddch(linha+POS_L, coluna+POS_C, (chtype) ' ');
 			}
 
 			
@@ -112,7 +112,10 @@ void imprime_tela_status(int pontuacao){
 }
 
 void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
-	int i,j;
+	int i, j, linha, diferenca, segundos, minutos, horas;
+	PECA* peca;
+	struct tm inicio;
+	struct tm fim;
 
 	start_color();
 	init_pair(9,COLOR_RED,COLOR_RED);
@@ -123,15 +126,15 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
-			mvaddch(i, j,'A');
+			mvaddch(i, j, (chtype)'A');
 		}
 	}
 
 	attrset(COLOR_PAIR(10));
 	move(3,14);
 	printw("...::: FIM DE JOGO :::...");
-	PECA* peca = lista_qtd_cada_peca->primeiro;
-	int linha = 7;
+	peca = lista_qtd_cada_peca->primeiro;
+	linha = 7;
 	move(5,10);
 	printw("QUANTIDADE DE CADA PECA:");
 	while(peca != NULL){
@@ -158,8 +161,8 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 		peca = peca->proximo;
 	}
 
-	struct tm inicio = *localtime (&hora_inicio);
-	struct tm fim = *localtime (&hora_final);
+	inicio = *localtime (&hora_inicio);
+	fim = *localtime (&hora_final);
 
 	move(LINES-9,25);
 	printw("HORA INCIO: %d:%d:%d", inicio.tm_hour, inicio.tm_min, inicio.tm_sec);
@@ -167,11 +170,11 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	move(LINES-8,25);
 	printw("HORA FIM: %d:%d:%d", fim.tm_hour, fim.tm_min, fim.tm_sec);
 
-	int diferenca = (int)difftime(hora_final, hora_inicio);
+	diferenca = (int)difftime(hora_final, hora_inicio);
 	
-	int segundos = diferenca%60;
-	int minutos = diferenca/60;
-	int horas = diferenca/60/60;
+	segundos = diferenca%60;
+	minutos = diferenca/60;
+	horas = diferenca/60/60;
 
 	move(LINES-7,25);
 	printw("TEMPO DE JOGO: %d:%d:%d", horas, minutos%60, segundos);
@@ -187,7 +190,7 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
-			mvaddch(i, j,'A');
+			mvaddch(i, j, (chtype) 'A');
 		}
 	}
 

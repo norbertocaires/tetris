@@ -14,17 +14,22 @@
 **/
 
 PECA* gera_peca(){
+   PECA* peca;
 
    srand((unsigned)time(NULL) );
-   PECA* peca = malloc(sizeof(PECA));
+   peca = malloc(sizeof(PECA));
+
+   peca->pos_linha = 0;
+   peca->pos_coluna = 0;
+   peca->proximo = NULL;
 
    peca->qtd = 0;
    peca->tipo = gera_tipo_peca();
    peca->tamanho = gera_tamanho_peca();
-   gera_posicao_peca(peca);
    peca->cor = gera_cor_peca();
    peca->status = EM_JOGO;
    peca->rotacao = 1;
+   gera_posicao_peca(peca);
    return peca;
 }
 
@@ -52,7 +57,7 @@ int gera_tamanho_peca(){
 int gera_cor_peca(){
 	int cor_peca = 0;
 
-	srand(time(NULL));
+	(void )srand(time(NULL));
 
 	while(cor_peca<3 || cor_peca>7){
     		cor_peca=rand()%8;
@@ -126,6 +131,7 @@ PECA* faz_copia_de_peca(PECA* peca){
 	copia->status = peca->status;
 	copia->cor = peca->cor;
 	copia->qtd = 1;
+	copia->proximo = NULL;
 	copia->rotacao = peca->rotacao;
 	return copia;
 }
@@ -136,13 +142,15 @@ PECA* faz_copia_de_peca(PECA* peca){
 **/
 
 void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
-	if(pecas->primeiro == NULL)
-		return;
 	int add;
-
-	PECA *peca = pecas->primeiro;
+	PECA *peca;
 	PECA *peca_qtd;
 	PECA *copia;
+
+	if(pecas->primeiro == NULL)
+		return;
+
+	peca = pecas->primeiro;
 	while(peca != NULL){
 		peca_qtd = nova_lista_qtd->primeiro;
 		add = 1;
@@ -170,7 +178,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 * Funcao inicialza lista de peças.
 *
 */
-void inicializaLista(PECAS *pecas){
+void inicializaLista(PECAS /*@out@*/ *pecas){
 	pecas->primeiro = NULL;
 	pecas->ultimo = NULL;
 	pecas->tamanho = 0;
