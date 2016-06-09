@@ -3,6 +3,9 @@ Relatório de descrição das tarefas detalhadas que cada	membro	realizou:
 
 Andrew Yuri Mata
 - Versão inicial do módulo placar - 24/05/16 - 2 horas
+- Revisão da documentação do código - 04/06/16 - 1h30
+- Novas implementacoes do modulo placar - 08/06/16 - 3 horas
+
 
 Norberto Luz Caires Junior
  - Adicionado movimento de gravidade de 1 segundo 21/05/2016 - 4 horas
@@ -14,3 +17,4 @@ Norberto Luz Caires Junior
 Programação em pares
  - Inclusão dos novos tipos de peça 25/05/2016 - 2 horas
  - Implementação da queda peças do tipo "Z" 25/05/2016 - 1 hora
+- Resolução de Warnings do Splint - 01/06/2016 - 3 horas
