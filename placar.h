@@ -33,6 +33,7 @@ void inicializaListaPlacar(LISTA_PONTUACAO *listaPontuacao);
 LISTA_PONTUACAO *carrega_placar();
 void atualiza_placar( char nome[], int pontuacao );
 void mostra_placar();   
+void retiraUltimaPontuacao(LISTA_PONTUACAO *listaPontuacao);
 
 
 #endif
