@@ -112,6 +112,7 @@ void imprime_tela_status(int pontuacao){
 }
 
 void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
+	LISTA_PONTUACAO *listaPontuacao;
 	int i, j, linha, diferenca, segundos, minutos, horas;
 	PECA* peca;
 	struct tm inicio;
@@ -188,12 +189,36 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 		attrset(COLOR_PAIR(9));
 
+/* Apresenta o placar */
+
+//Limpa a tela
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
 			mvaddch(i, j, (chtype) 'A');
 		}
 	}
-
+// Recebe o nome do usuario
+	char nome[2];
 	attrset(COLOR_PAIR(10));
-	getch(); getch();
+	move(3,10);
+	printw("Digite seu nome: ");
+	move(5,10);
+	printw("Serao gravadas as 10 primeiras letras");
+	move(3,28);
+	getstr(nome);
+// Apresenta o placar
+	listaPontuacao = carrega_placar();
+	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
+	i =10;
+	while(listaPontuacao->pontuacaoAtual->proximo != NULL){
+		move(i,10);
+		printw("Nome: %s pontuacao: %d", listaPontuacao->pontuacaoAtual->nome,listaPontuacao->pontuacaoAtual->pontos);
+		listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
+		i++;
+	}
+
+	getch();getch();
+
+
+
 }

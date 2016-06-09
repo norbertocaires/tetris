@@ -8,6 +8,6 @@
 #define VERDADEIRO 1;
 #define FALSO 0;
 #define ARQUIVO_PLACAR "placar.txt" /** Constante que define o nome do arvquivo onde o placar será persistido */
-#define TAM_NOME 5 /** Constante que define o tamanho máximo do nome nos placares */
+#define TAM_NOME 10 /** Constante que define o tamanho máximo do nome nos placares */
 
 #endif
