@@ -114,6 +114,7 @@ void imprime_tela_status(int pontuacao){
 void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
 	LISTA_PONTUACAO *listaPontuacao;
 	int i, j, linha, diferenca, segundos, minutos, horas;
+	char nome[2];
 	PECA* peca;
 	struct tm inicio;
 	struct tm fim;
@@ -198,7 +199,6 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 		}
 	}
 // Recebe o nome do usuario
-	char nome[2];
 	attrset(COLOR_PAIR(10));
 	move(3,10);
 	printw("Digite seu nome: ");

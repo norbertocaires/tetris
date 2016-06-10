@@ -750,7 +750,7 @@ void teste_move_peca_para_direita_ate_borda_vertical_tamanho_5(void){
 
 
 
-void  adicionar_suite(void){
+void  adicionar_suite_engine(void){
 	CU_pSuite suite;
 
 	/*Cria uma suite que conterá todos os testes*/
@@ -825,14 +825,14 @@ void  adicionar_suite(void){
 }
 
 
-int rodar_teste_pecas(){
+int rodar_teste_engine(){
 
 	/*Inicializa o registro de suítes e testes do CUnit*/
 	if (CUE_SUCCESS != CU_initialize_registry())
     		return CU_get_error();
 
 	/*Adiciona os testes ao registro*/
-   	adicionar_suite();
+   	adicionar_suite_engine();
 
 	/*Muda o modo do CUnit para o modo VERBOSE
 	 O modo VERBOSE mostra algumas informacoes a
@@ -840,7 +840,7 @@ int rodar_teste_pecas(){
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 
 	/*Roda os testes e mostra na tela os resultados*/
-	CU_basic_run_tests();
+	(void)CU_basic_run_tests();
 	//CU_console_run_tests();
 	//CU_automated_run_tests();
 
@@ -851,6 +851,6 @@ int rodar_teste_pecas(){
 }
 
 int main(){
-	rodar_teste_pecas();
+	rodar_teste_engine();
 	return 1;
 }

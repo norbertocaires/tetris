@@ -13,6 +13,8 @@ Norberto Luz Caires Junior
  - Adicionado movimento para esquerda em todas as peças 26/05/2016 - 2 horas
  - Adicionado movimento de queda em todas as peças 26/05/2016 - 2 horas
  - Adicionado movimento de rotação em todas as peças 26/05/2016 - 6 horas
+ - Resolução de Warnings do Splint - 03/06/2016 - 2 horas
+ - Resolução de Warnings do Splint - 09/06/2016 - 30m
 
 Programação em pares
  - Inclusão dos novos tipos de peça 25/05/2016 - 2 horas

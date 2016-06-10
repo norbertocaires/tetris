@@ -10,6 +10,23 @@
 #include "CUnit/Basic.h"
 #include "pecas.h"
 
+PECA* gera_peca_teste(int tamanho, int tipo){
+	PECA* peca = malloc(sizeof(PECA));
+	peca->status = EM_JOGO;
+	peca->pos_linha = 0;
+	peca->pos_coluna = 13;
+	peca->tipo = tipo;
+	peca->tamanho = tamanho;
+	peca->cor = 100;
+
+	peca->tamanho = tamanho;
+	peca->rotacao = 0;
+	peca->proximo = NULL;
+	peca->qtd = 0;
+
+	return peca;
+}
+
 void teste_gera_peca(){
 
 
@@ -66,31 +83,15 @@ void teste_gera_tipo_peca(){
 
 }
 void teste_gera_posicao_peca(){
-    PECA* peca1;
-    PECA* peca2;
-    PECA* peca3;
-    PECA* peca4;
+    PECA* peca1 = gera_peca_teste(4, RETA_VERTICAL);
+    PECA* peca2 = gera_peca_teste(3, RETA_HORIZONTAL);
+    PECA* peca3 = gera_peca_teste(4, RETA_HORIZONTAL);
+    PECA* peca4 = gera_peca_teste(5, RETA_HORIZONTAL);
 
 	int passou;
 	passou = VERDADEIRO;
 
  	srand( (unsigned)time(NULL) );
-    peca1 = malloc(sizeof(PECA));
-    peca2 = malloc(sizeof(PECA));
-    peca3 = malloc(sizeof(PECA));
-    peca4 = malloc(sizeof(PECA));
-
-    peca1->tipo = RETA_VERTICAL; 
-    peca1->tamanho = 4;
-
-    peca2->tipo = RETA_HORIZONTAL;
-    peca2->tamanho = 3;
-
-    peca3->tipo = RETA_HORIZONTAL;
-    peca3->tamanho = 4;
-
-	peca4->tipo = RETA_HORIZONTAL; 
-    peca4->tamanho = 5;    
 
     gera_posicao_peca(peca1);
     gera_posicao_peca(peca2);
@@ -198,7 +199,7 @@ int rodar_teste_pecas(){
 	CU_basic_set_mode(CU_BRM_VERBOSE);
 
 	/*Roda os testes e mostra na tela os resultados*/
-	CU_basic_run_tests();
+	(void)CU_basic_run_tests();
 	//CU_console_run_tests();
 	//CU_automated_run_tests();
 
