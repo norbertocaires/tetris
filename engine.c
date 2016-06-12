@@ -947,10 +947,6 @@ extern void move_peca_para_baixo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 
 }
 
-/**
-* Gira peça em seu eixo central em noventa graus.
-*/
-
 extern void gira_peca_noventa_graus(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int linha = 0;
 	int coluna = 0;
@@ -1571,7 +1567,7 @@ extern int verifica_fim_de_jogo(int tabuleiro[][NUM_COLUNAS]){
 
 extern int pontua(int tabuleiro[][NUM_COLUNAS]){
 
-	int linha,coluna,contador_peca=0,pontuacao = 0 ;
+	int linha,coluna,contador_peca=0,pontuacao=0 ;
 
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		contador_peca = 0;
@@ -1605,7 +1601,7 @@ extern void limpa_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 }
 
 /**
-*     Função que faz com que todas as linhas, acima da linha, caiam
+*     Função que faz com que todas as linhas, acima da linha
 *
 */
 

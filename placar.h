@@ -8,8 +8,8 @@ struct pontuacao{
     
 	char nome[TAM_NOME];
 	int pontos;
-	char data[8];
-	int tempo;
+	char data[100];
+	char tempo[100];
 	struct pontuacao *proximo;
 	struct pontuacao *anterior;
 
@@ -34,6 +34,9 @@ LISTA_PONTUACAO *carrega_placar();
 void atualiza_placar( char nome[], int pontuacao );
 void mostra_placar();   
 void retiraUltimaPontuacao(LISTA_PONTUACAO *listaPontuacao);
-
+void adicionaListaPontuacao(LISTA_PONTUACAO *listaPontuacao,PONTUACAO *pontuacao);
+char *data();
+char *format(int number);
+void escreve_placar(LISTA_PONTUACAO *listaPontuacao);
 
 #endif

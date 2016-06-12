@@ -1,8 +1,60 @@
+#include <time.h>
+#include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "placar.h"
-#include "stdio.h"
 #include "parametros.h"
-#include "stdlib.h"
 #include "string.h"
+
+
+
+char *format(int number){      
+   char    *retorno,
+      ret[100];
+
+   if (number < 10){
+      sprintf(ret,"0%d",number);
+      retorno = ret;
+      return retorno;
+   }
+   else{
+      sprintf(ret,"%d",number);
+      retorno = ret;
+      return retorno;
+   }
+}      
+
+// funcao que retorna data
+char *data(void){
+   int dia,mes,ano;
+   char   strDia[100], strMes[100], strAno[100], strData[100],*dataPtr;
+   struct tm *local;
+   time_t t;
+
+   t = time(NULL);
+   local = localtime(&t);
+
+   dia = local->tm_mday;
+   mes = local->tm_mon + 1;
+   ano = local->tm_year + 1900;
+
+   // por algum motivo precisa converter os valores retornados pelos ponteiros
+   // da funcao em variaveis do tipo char      
+   sprintf(strDia,"%s",format(dia));
+   sprintf(strMes,"%s",format(mes));
+   sprintf(strAno,"%s",format(ano));
+
+   // cria a variavel de retorno dos dados e cria um ponteiro para essa variavel      
+   sprintf(strData,"%s/%s/%s",strDia,strMes,strAno);
+   
+   // retorna data no formato dd:MM:yyyy com um ponteiro
+   dataPtr = strData;
+   return dataPtr;
+}
+
+
+
 
 /**
 *   Função responsável por inicializar os parâmetros da lista de pontuações
@@ -46,23 +98,32 @@ void adicionaListaPontuacao(LISTA_PONTUACAO *listaPontuacao, PONTUACAO *pontuaca
 			pontuacao->proximo->anterior = pontuacao;
 		}
 
+		while(listaPontuacao->pontuacaoAtual->proximo != NULL){
+			listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
+		}
+		listaPontuacao->ultimaPontuacao = listaPontuacao->pontuacaoAtual;
+		listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;		
+
 	}
 
 	listaPontuacao->qtdPontuacoes++;
 	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
-	if(listaPontuacao->qtdPontuacoes > 5)
+	if(listaPontuacao->qtdPontuacoes > 5){
 		retiraUltimaPontuacao(listaPontuacao);
+	}
 
 	
 }
 
 
 void retiraUltimaPontuacao(LISTA_PONTUACAO *listaPontuacao){
-
+	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
 	while(listaPontuacao->pontuacaoAtual->proximo != NULL){
 		listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
 	}
 
+	listaPontuacao->pontuacaoAtual->anterior->proximo = NULL;
+	listaPontuacao->ultimaPontuacao = listaPontuacao->pontuacaoAtual->anterior;
 	free(listaPontuacao->pontuacaoAtual);
 	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
 
@@ -70,38 +131,74 @@ void retiraUltimaPontuacao(LISTA_PONTUACAO *listaPontuacao){
 
 
 /**
-* Função responsável por carregar, do arquivo cujo nome está em "parametros.h", as pontuacoes anteriores
+* Função resp
+onsável por carregar, do arquivo cujo nome está em "parametros.h", as pontuacoes anteriores
 *
 */
 
 
 LISTA_PONTUACAO *carrega_placar(){
-	char nome[5];
+	char nome[100];
 	int pontos;
-	char data[8];
-	int tempo;
-
+	char data[100];
+	char tempo[100];
 
 	FILE *parquivo;
 	LISTA_PONTUACAO *listaPontuacao = malloc(sizeof(LISTA_PONTUACAO));
 	inicializaListaPlacar(listaPontuacao);
 
-	parquivo = fopen(ARQUIVO_PLACAR,"r");
+	parquivo = fopen(ARQUIVO_PLACAR,"r+");
+
 	if (!parquivo){
+
 		return NULL;
 	}
 
-	while (fscanf(parquivo,"%s %d %s %d",nome, &pontos, data, &tempo) != EOF){
+	
+	while (fscanf(parquivo,"%s %d %s %s",nome, &pontos, data, tempo) != EOF){
+
 		   PONTUACAO *pontuacao = malloc(sizeof(PONTUACAO));
 		   strcpy(pontuacao->nome,nome);
 		   pontuacao->pontos = pontos;
 		   strcpy(pontuacao->data,data);
-		   pontuacao->tempo = tempo;
+		   strcpy(pontuacao->tempo,tempo);
 		   adicionaListaPontuacao(listaPontuacao,pontuacao);
 
 	}
+	if(listaPontuacao->primeiraPontuacao != NULL){
+		while(listaPontuacao->pontuacaoAtual->proximo != NULL){
+			listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
+		}
+		listaPontuacao->ultimaPontuacao = listaPontuacao->pontuacaoAtual;
+		listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;	
+	}
 	fclose(parquivo);
 	return listaPontuacao;
+}
+
+void escreve_placar(LISTA_PONTUACAO *listaPontuacao){
+
+	FILE *parquivo;
+	parquivo = fopen(ARQUIVO_PLACAR,"w+");
+	int rep = VERDADEIRO;
+
+	if (!parquivo){
+
+		return;
+	}
+
+	while(rep){
+		
+		fprintf(parquivo,"%s %d %s %s \n", listaPontuacao->pontuacaoAtual->nome,listaPontuacao->pontuacaoAtual->pontos, listaPontuacao->pontuacaoAtual->data, listaPontuacao->pontuacaoAtual->tempo);
+
+		if(listaPontuacao->pontuacaoAtual->proximo != NULL){
+			listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
+		}else{
+			listaPontuacao->pontuacaoAtual = NULL;
+			rep = FALSO;
+		}
+	}
+	fclose(parquivo);
 }
 
 

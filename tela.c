@@ -1,5 +1,7 @@
 #include <time.h>
 #include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "parametros.h"
 #include "pecas.h"
 #include "placar.h"
@@ -114,7 +116,9 @@ void imprime_tela_status(int pontuacao){
 void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
 	LISTA_PONTUACAO *listaPontuacao;
 	int i, j, linha, diferenca, segundos, minutos, horas;
-	char nome[2];
+	char nome[TAM_NOME];
+	char tempoJogo [100];
+	PONTUACAO *pontuacaoAux;
 	PECA* peca;
 	struct tm inicio;
 	struct tm fim;
@@ -180,9 +184,10 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	move(LINES-7,25);
 	printw("TEMPO DE JOGO: %d:%d:%d", horas, minutos%60, segundos);
+	sprintf(tempoJogo,"%d:%d:%d", horas, minutos%60, segundos);
 
 	move(LINES-6,25);
-	printw("PONTUACAO FINAL: %i", pontuacao);
+	printw("PONTUACAO FINAL: %d", pontuacao);
 
 	move(LINES-3,10);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA FINALIZAR :::...");
@@ -190,21 +195,16 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 		attrset(COLOR_PAIR(9));
 
+/* Apresenta o placar */
 
-/**
-* Apresenta o placar
-* Limpa a tela
-*/
+//Limpa a tela
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
 			mvaddch(i, j, (chtype) 'A');
 		}
 	}
-
-/**
-* Recebe o nome do usuario
-*/
-
+	
+// Recebe o nome do usuario
 	attrset(COLOR_PAIR(10));
 	move(3,10);
 	printw("Digite seu nome: ");
@@ -212,11 +212,29 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	printw("Serao gravadas as 10 primeiras letras");
 	move(3,28);
 	getstr(nome);
-/**
-* Apresenta o placar
-*/
-
+	
+	
+// Apresenta o placar
 	listaPontuacao = carrega_placar();
+	
+	if (listaPontuacao->primeiraPontuacao == NULL){// FIca repetido pois as verifciacoes do else if estava dando segmentation fault
+
+		pontuacaoAux = malloc(sizeof(PONTUACAO));
+		sprintf(pontuacaoAux->nome,"%s",nome);
+		pontuacaoAux->pontos = pontuacao;
+		sprintf(pontuacaoAux->data,"%s",data());
+		sprintf(pontuacaoAux->tempo,"%s",tempoJogo);
+		adicionaListaPontuacao(listaPontuacao,pontuacaoAux);
+
+	}else if(pontuacao > listaPontuacao->ultimaPontuacao->pontos || listaPontuacao->qtdPontuacoes < 5 ){
+		pontuacaoAux = malloc(sizeof(PONTUACAO));
+		sprintf(pontuacaoAux->nome,"%s",nome);
+		pontuacaoAux->pontos = pontuacao;
+		sprintf(pontuacaoAux->data,"%s",data());
+		sprintf(pontuacaoAux->tempo,"%s",tempoJogo);
+		adicionaListaPontuacao(listaPontuacao,pontuacaoAux);
+	}
+
 	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
 	i =10;
 	while(listaPontuacao->pontuacaoAtual->proximo != NULL){
@@ -226,6 +244,12 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 		i++;
 	}
 
+	move(i,10);
+	printw("Nome: %s pontuacao: %d", listaPontuacao->pontuacaoAtual->nome,listaPontuacao->pontuacaoAtual->pontos);
+	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
+	getch();getch();
+	escreve_placar(listaPontuacao);
+	
 	getch();getch();
 
 
