@@ -5,6 +5,11 @@ Andrew Yuri Mata
 - Versão inicial do módulo placar - 24/05/16 - 2 horas
 - Revisão da documentação do código - 04/06/16 - 1h30
 - Novas implementacoes do modulo placar - 08/06/16 - 3 horas
+- Finalização do módulo placar - 11/06/2016 - 3 horas
+- Geração do módulo testePlacar - 12/06/2016 - 2 horas
+- Adequação de nomenclaturas no código para a padronização - 30m
+- Revisão de toda a documentação do código e geração de HTML via doxygen - 12/06/2016 - 2 horas
+
 
 
 Norberto Luz Caires Junior
@@ -15,8 +20,6 @@ Norberto Luz Caires Junior
  - Adicionado movimento de rotação em todas as peças 26/05/2016 - 6 horas
  - Resolução de Warnings do Splint - 03/06/2016 - 2 horas
  - Resolução de Warnings do Splint - 09/06/2016 - 30m
- - Documento de padranização - 11/06/2016 - 20m
- - Teste das novas peças - 11/06/2016 - 2 horas
 
 Programação em pares
  - Inclusão dos novos tipos de peça 25/05/2016 - 2 horas
