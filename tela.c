@@ -1,14 +1,26 @@
 #include <time.h>
 #include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "parametros.h"
 #include "pecas.h"
 #include "placar.h"
 
+
+
+/**
+*    Função que imprime as bordas da tela
+*/
 void imprime_borda_tela(){
 	border(0, 0, 0, 0, 0, 0, 0, 0);
 	refresh();
 }
 
+
+/**
+*    Função que imprime tela inicial. Definido a cor de fundo e fazendo com que o programa fique aguardando 
+* 	qualquer entrada no teclado para iniciar o jogo.
+*/
 void imprime_tela_inicial(){
 
 	int i,j;
@@ -41,6 +53,10 @@ void imprime_tela_inicial(){
 	attrset(COLOR_PAIR(12));
 }
 
+/**
+*    Função que imprime as bordas do tabuleiro.
+*/
+
 void imprime_borda_tabuleiro(){
 	int linha, coluna;
 	for(linha=0;linha<NUM_LINHAS;linha++){
@@ -58,13 +74,15 @@ void imprime_borda_tabuleiro(){
 	}
 	refresh();
 }
-
+/**
+*    Função que imprime somente a parte interna do tabuleiro.
+*/
 void imprime_tabuleiro_sem_borda(int tabuleiro[][NUM_COLUNAS]){
 	int linha, coluna;
-/**
-*   Inicialização dos "pairs" que serão utilizados para colorir as peças.
-*   Cada um desses pares é uma das cores que as peças poderão ter.
-*/
+
+//   Inicialização dos "pairs" que serão utilizados para colorir as peças.
+//   Cada um desses pares é uma das cores que as peças poderão ter.
+
 
 	init_pair(3,3,3);
 	init_pair(4,4,4);
@@ -73,9 +91,9 @@ void imprime_tabuleiro_sem_borda(int tabuleiro[][NUM_COLUNAS]){
 	init_pair(7,7,7);
 	init_pair(2,COLOR_BLACK,COLOR_BLACK);
 
-/**
-*   Laços que percorrem todas a matriz imprimindo o tabuleiro
-*/
+//
+//   Laços que percorrem todas a matriz imprimindo o tabuleiro
+//
 
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		for(coluna=0;coluna<NUM_COLUNAS;coluna++){
@@ -93,7 +111,10 @@ void imprime_tabuleiro_sem_borda(int tabuleiro[][NUM_COLUNAS]){
 	attrset(COLOR_PAIR(2));
 	refresh();
 }
-
+/*
+*  Imprime e uma pequena tela auxiliar, ao lado do tabuleiro de jogo, contendo a pontuação do jogador.
+* @param pontuacao: Recebe a pontuação que será exibida.
+*/
 void imprime_tela_status(int pontuacao){
 	
 	WINDOW *my_win;
@@ -111,10 +132,17 @@ void imprime_tela_status(int pontuacao){
 	
 }
 
+
+/*
+* Após o fim do jogo, serão exibidas as informações sobre a performande do jogador (pontuação, tempo de jogo e etc.)
+* Será, também, requerido ao jogado escrever seu nome e, se for o caso, incluído no placar com as melhores pontuacoes.
+*/
 void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_inicio,time_t hora_final){
-	LISTA_PONTUACAO *listaPontuacao;
+	LISTA_PONTUACAO *lista_pontuacao;
 	int i, j, linha, diferenca, segundos, minutos, horas;
-	char nome[2];
+	char nome[TAM_NOME];
+	char tempoJogo [100];
+	PONTUACAO *pontuacao_aux;
 	PECA* peca;
 	struct tm inicio;
 	struct tm fim;
@@ -180,9 +208,10 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	move(LINES-7,25);
 	printw("TEMPO DE JOGO: %d:%d:%d", horas, minutos%60, segundos);
+	sprintf(tempoJogo,"%d:%d:%d", horas, minutos%60, segundos);
 
 	move(LINES-6,25);
-	printw("PONTUACAO FINAL: %i", pontuacao);
+	printw("PONTUACAO FINAL: %d", pontuacao);
 
 	move(LINES-3,10);
 	printw("...::: PRESSIONE ALGUMA TECLA PARA FINALIZAR :::...");
@@ -190,21 +219,16 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 		attrset(COLOR_PAIR(9));
 
+/* Apresenta o placar */
 
-/**
-* Apresenta o placar
-* Limpa a tela
-*/
+//Limpa a tela
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
 			mvaddch(i, j, (chtype) 'A');
 		}
 	}
-
-/**
-* Recebe o nome do usuario
-*/
-
+	
+// Recebe o nome do usuario
 	attrset(COLOR_PAIR(10));
 	move(3,10);
 	printw("Digite seu nome: ");
@@ -212,20 +236,45 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	printw("Serao gravadas as 10 primeiras letras");
 	move(3,28);
 	getstr(nome);
-/**
-* Apresenta o placar
-*/
+	
+	
+// Apresenta o placar
+	//O argumento diz se vai carregar o arquivo de teste ou nao
+	lista_pontuacao = carrega_placar(FALSO);
+	
+	if (lista_pontuacao->primeira_pontuacao == NULL){// FIca repetido pois as verifciacoes do else if estava dando segmentation fault
 
-	listaPontuacao = carrega_placar();
-	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
+		pontuacao_aux = malloc(sizeof(PONTUACAO));
+		sprintf(pontuacao_aux->nome,"%s",nome);
+		pontuacao_aux->pontos = pontuacao;
+		sprintf(pontuacao_aux->data,"%s",data());
+		sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		adiciona_lista_pontuacao(lista_pontuacao,pontuacao_aux);
+
+	}else if(pontuacao > lista_pontuacao->ultima_pontuacao->pontos || lista_pontuacao->qtd_pontuacoes < 5 ){
+		pontuacao_aux = malloc(sizeof(PONTUACAO));
+		sprintf(pontuacao_aux->nome,"%s",nome);
+		pontuacao_aux->pontos = pontuacao;
+		sprintf(pontuacao_aux->data,"%s",data());
+		sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		adiciona_lista_pontuacao(lista_pontuacao,pontuacao_aux);
+	}
+
+	lista_pontuacao->pontuacao_atual = lista_pontuacao->primeira_pontuacao;
 	i =10;
-	while(listaPontuacao->pontuacaoAtual->proximo != NULL){
+	while(lista_pontuacao->pontuacao_atual->proximo != NULL){
 		move(i,10);
-		printw("Nome: %s pontuacao: %d", listaPontuacao->pontuacaoAtual->nome,listaPontuacao->pontuacaoAtual->pontos);
-		listaPontuacao->pontuacaoAtual = listaPontuacao->pontuacaoAtual->proximo;
+		printw("Nome: %s pontuacao: %d", lista_pontuacao->pontuacao_atual->nome,lista_pontuacao->pontuacao_atual->pontos);
+		lista_pontuacao->pontuacao_atual = lista_pontuacao->pontuacao_atual->proximo;
 		i++;
 	}
 
+	move(i,10);
+	printw("Nome: %s pontuacao: %d", lista_pontuacao->pontuacao_atual->nome,lista_pontuacao->pontuacao_atual->pontos);
+	lista_pontuacao->pontuacao_atual = lista_pontuacao->primeira_pontuacao;
+	
+	escreve_placar(lista_pontuacao);
+	
 	getch();getch();
 
 

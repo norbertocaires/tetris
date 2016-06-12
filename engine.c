@@ -2,10 +2,13 @@
 #include "pecas.h"
 #include "parametros.h"
 
+
+
+
 extern void desce_todas_linhas(int tabuleiro[][NUM_COLUNAS],int linha);
 
 /*
-* Finaliza ncurses. 
+* Inicializa o ncurses. 
 *
 */
 extern void inicia_ncurses(){
@@ -24,14 +27,15 @@ extern void finaliza_ncurses(){
 
 /*
 * Pega entrada no usuario. 
-*
+* @return retorna o caracter inserido pelo usuario
 */
 extern char pega_input(){
 	return (char) getchar();
 }
 /*
 * Desenha peça atual no tabuleiro. 
-*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: peca que irá inserida no tabuleiro.
 */
 extern void insere_peca_tabuleiro(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int coluna;
@@ -86,6 +90,8 @@ extern void insere_peca_tabuleiro(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 /*
 * Faz o movimento da peça atual para esquerda. 
 *
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: peca que irá ser movida.
 */
 extern void move_peca_para_esquerda(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int linha;
@@ -373,6 +379,8 @@ extern void move_peca_para_esquerda(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 
 /*
 * Faz o movimento da peça atual para direita. 
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: peca que irá ser movida.
 *
 */
 extern void move_peca_para_direita(int tabuleiro[][NUM_COLUNAS], PECA* peca){
@@ -665,7 +673,10 @@ extern void move_peca_para_direita(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 }
 
 /*
-* Faz o movimento da peça atual para baixo. 
+* Faz o movimento da peça atual uma linha para baixo.
+*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: peca que irá ser movida.
 *
 */
 extern void move_peca_para_baixo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
@@ -947,8 +958,10 @@ extern void move_peca_para_baixo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 
 }
 
-/**
-* Gira peça em seu eixo central em noventa graus.
+/** Função que gira um peça noventa graus.
+*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: Peça que irá sofrer a transformação de giro.
 */
 
 extern void gira_peca_noventa_graus(int tabuleiro[][NUM_COLUNAS], PECA* peca){
@@ -1351,6 +1364,9 @@ extern void gira_peca_noventa_graus(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 /*
 * Verifica se a peça atual chegou no final do tabuleiro ou encostou em outra peça.
 * Caso verdadeiro, a peça fica FIXA.
+*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*   @param peca: Peca que está em jogo e poderá ficar fixa. 
 */
 
 extern void verifica_peca_em_jogo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
@@ -1551,6 +1567,7 @@ extern void verifica_peca_em_jogo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 
 /*
 * Verifica se na linha 6 existe alguma peça, caso exista o jogo acaba.
+**   @param tabuleiro: matriz contendo o tabuleiro de jogo.
 *
 */
 
@@ -1565,13 +1582,17 @@ extern int verifica_fim_de_jogo(int tabuleiro[][NUM_COLUNAS]){
 }
 
 /**
-*   Função que recebe com parâmetro o tabuleiro e verifica se alguma das linhas está completa. Retorna a pontuação feita naquela rodada ( 100 pontos para cada linha)
+*   Função que recebe com parâmetro o tabuleiro e verifica se alguma das linhas está completa. 
+*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo.
+*	@return Retorna a pontuação feita naquela rodada ( 100 pontos para cada linha)	
+*
 */
 
 
 extern int pontua(int tabuleiro[][NUM_COLUNAS]){
 
-	int linha,coluna,contador_peca=0,pontuacao = 0 ;
+	int linha,coluna,contador_peca=0,pontuacao=0 ;
 
 	for(linha=0;linha<NUM_LINHAS;linha++){
 		contador_peca = 0;
@@ -1592,9 +1613,10 @@ extern int pontua(int tabuleiro[][NUM_COLUNAS]){
 
 
 /**
-*   Função que transforma todas as colunas de uma linhas completa em zeros. Na versão do primeiro trabalho, essa ação não poderá ser visualizada. Porém quando as funções de tempo forem implementadas,
-*   a "limpeza" poderá ser visualizada.
+*   Função que transforma todas as colunas de uma linhas completa em zeros, limpando a mesma
 *
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo
+*   @param linha: Linhas em que todos os espaços serão limpos.
 */
 extern void limpa_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 	int coluna;
@@ -1605,8 +1627,10 @@ extern void limpa_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 }
 
 /**
-*     Função que faz com que todas as linhas, acima da linha, caiam
-*
+*     Função que faz com que todas as linhas, acima da linha
+*	  
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo
+*   @param linha: Linha que será excluída. Todas as peças acima dela irão descer.
 */
 
 
@@ -1619,6 +1643,14 @@ extern void desce_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 	}
 
 }
+
+
+/** Função responsável por fazer todas as peças decerem uma linha no tabuleiro. Isso acontece quando uma linha
+*   é completa no tabuleiro de tetris.
+*
+*   @param tabuleiro: matriz contendo o tabuleiro de jogo
+*   @param linha: Linha que será excluída. Todas as peças acima dela irão descer.
+*/
 
 extern void desce_todas_linhas(int tabuleiro[][NUM_COLUNAS],int linha){
 

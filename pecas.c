@@ -5,12 +5,15 @@
 #include "parametros.h"
 
 /**
-* Função que retorna um parâmetro do tipo PECA, aleatório, gerando seu tipo e tamanho.
+* Função que gera uma PECA. Ela gera, aleatoriamente, seu tipo,tamanho e posicao.
 *	
-* Posicoes: 1 - Inicial
-*           2 - 90 graus
-*	    3 - 180 graus	
-*	    4 - 270 graus
+* Posicoes: 0 - Inicial
+*       1 - 90 graus
+*	    2 - 180 graus	
+*	    3 - 270 graus
+*
+*
+*     @return Retorna um ponteiro para PECA, 
 **/
 
 PECA* gera_peca(){
@@ -35,7 +38,9 @@ PECA* gera_peca(){
 
 
 /**
-* Função que gera, aleatóriamente o tamanho da peças retas. Nessa versão a peça terá entre os tamanhos 3 e 5.
+* Função que gera, aleatóriamente o tamanho da peças retas. Os limites de tamanho estão no arquivo "parametros.h".
+*
+*  @return Retorna o tamanho gerado, dentro do intervalo definido
 *
 */
 
@@ -51,6 +56,7 @@ int gera_tamanho_peca(){
 
 /**
 * Função que gera, aleatoriamente a cor da peça. 
+*    @return Retorna um inteiro representando a cor gerada.
 *
 */
 
@@ -67,8 +73,10 @@ int gera_cor_peca(){
 }
 
 /**
-* Função que gera, aleatóriamente, o tipo da peça. Nessa versão poderá ser do tipo RETA_VERTICAL e RETA_HORIZONTAL. Caso haja
-* erro na geração, será retornado o número 99.
+* Função que gera, aleatóriamente, o tipo da peça. Caso haja erro na geração, será retornado o número 99.
+*
+* @return Retorna um inteiro representando o tipo da peça. As constantes estão definidas no arquivo "pecas.h"
+*
 *
 */
 int gera_tipo_peca(){
@@ -93,9 +101,11 @@ int gera_tipo_peca(){
 }
 
 /**
-* Função que gera, aleatóriamente, a posicao inicial da peça.
-* Vertical: início da peça em [0][12].
+* Função que gera, aleatóriamente, a posicao inicial das peças horizontais e verticais. Essa função é necessária
+* Uma vez que esses tipos de peças tem tamanho variável.
+* Vertical: início da peça em [0][13].
 * Horizontal: [0][x]... x varia com o tamanho da peça, mas com o foco no centro da linha.
+* @param peca: ponteiro para a peça cuja posicao inical será gerada.
 */
 
 void gera_posicao_peca(PECA* peca){
@@ -107,11 +117,11 @@ void gera_posicao_peca(PECA* peca){
 			break;
 		case RETA_HORIZONTAL:
 			if(peca->tamanho == 3)
-				peca->pos_coluna = 11;
+				peca->pos_coluna = 12 - 1;
 			if(peca->tamanho == 4)
-				peca->pos_coluna = 11;
+				peca->pos_coluna = 12 - 1;
 			if(peca->tamanho == 5)
-				peca->pos_coluna = 10;
+				peca->pos_coluna = 12 - 2;
 			break;
 		default:
 			peca->pos_coluna = 12;
@@ -121,6 +131,9 @@ void gera_posicao_peca(PECA* peca){
 
 /**
 * Faz copia de peca
+* @param peca: Ponteiro para a peca que será copiada
+* @return Ponteiro para a copia da peça recebida
+*
 */
 PECA* faz_copia_de_peca(PECA* peca){
 	PECA* copia = malloc(sizeof(PECA));
@@ -139,6 +152,8 @@ PECA* faz_copia_de_peca(PECA* peca){
 /**
 * Função que gera lista de peças e com a quantidade que cada 
 * peca apareceu no jogo;
+*  @param pecas: Lista de pecas
+*  @param nova_lista_qtd: lista de qtd de peças.
 **/
 
 void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
@@ -167,7 +182,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 			peca_qtd = peca_qtd->proximo;
 		}
 		if(add == 1){
-			adiciona_peca_lista(nova_lista_qtd, copia);
+			adicionaPecaLista(nova_lista_qtd, copia);
 		}
 		peca = peca->proximo;
 	}
@@ -176,9 +191,9 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 
 /**
 * Funcao inicialza lista de peças.
-*
+* @param Ponteiro para a lista de peças que será inicializada.
 */
-void inicializa_lista(PECAS /*@out@*/ *pecas){
+void inicializaLista(PECAS /*@out@*/ *pecas){
 	pecas->primeiro = NULL;
 	pecas->ultimo = NULL;
 	pecas->tamanho = 0;
@@ -187,8 +202,11 @@ void inicializa_lista(PECAS /*@out@*/ *pecas){
 /**
 * Adiciona uma peça na lista.
 *
+* @param pecas: lista de peças que irá receber uma nova peca
+* @param peca: Nova peça que será inserida na lista.
+*
 */
-void adiciona_peca_lista(PECAS *pecas, PECA *peca ){
+void adicionaPecaLista(PECAS *pecas, PECA *peca ){
 	if(pecas->primeiro == NULL){
 		pecas->primeiro = peca;
 		pecas->ultimo = peca;
