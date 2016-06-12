@@ -59,8 +59,8 @@ int gera_tipo_peca();
 void gera_posicao_peca(PECA* peca);
 PECA* faz_copia_de_peca(PECA* peca);
 void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd);
-void inicializaLista(PECAS /*@out@*/ *pecas);
-void adicionaPecaLista(PECAS *pecas, PECA *peca);
+void inicializa_lista(PECAS /*@out@*/ *pecas);
+void adiciona_peca_lista(PECAS *pecas, PECA *peca);
 
 
 #endif

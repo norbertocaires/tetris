@@ -947,6 +947,10 @@ extern void move_peca_para_baixo(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 
 }
 
+/**
+* Gira peça em seu eixo central em noventa graus.
+*/
+
 extern void gira_peca_noventa_graus(int tabuleiro[][NUM_COLUNAS], PECA* peca){
 	int linha = 0;
 	int coluna = 0;
@@ -1601,7 +1605,7 @@ extern void limpa_linha(int tabuleiro[][NUM_COLUNAS],int linha){
 }
 
 /**
-*     Função que faz com que todas as linhas, acima da linha
+*     Função que faz com que todas as linhas, acima da linha, caiam
 *
 */
 

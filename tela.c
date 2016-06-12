@@ -190,15 +190,21 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 		attrset(COLOR_PAIR(9));
 
-/* Apresenta o placar */
 
-//Limpa a tela
+/**
+* Apresenta o placar
+* Limpa a tela
+*/
 	for (i=1;i<(LINES-1);i++){
 		for(j=1;j<(COLS-1);j++){
 			mvaddch(i, j, (chtype) 'A');
 		}
 	}
-// Recebe o nome do usuario
+
+/**
+* Recebe o nome do usuario
+*/
+
 	attrset(COLOR_PAIR(10));
 	move(3,10);
 	printw("Digite seu nome: ");
@@ -206,7 +212,10 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	printw("Serao gravadas as 10 primeiras letras");
 	move(3,28);
 	getstr(nome);
-// Apresenta o placar
+/**
+* Apresenta o placar
+*/
+
 	listaPontuacao = carrega_placar();
 	listaPontuacao->pontuacaoAtual = listaPontuacao->primeiraPontuacao;
 	i =10;

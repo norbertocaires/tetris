@@ -7,10 +7,10 @@
 /**
 * Função que retorna um parâmetro do tipo PECA, aleatório, gerando seu tipo e tamanho.
 *	
-* Posicoes: 0 - Inicial
-*           1 - 90 graus
-*	    2 - 180 graus	
-*	    3 - 270 graus
+* Posicoes: 1 - Inicial
+*           2 - 90 graus
+*	    3 - 180 graus	
+*	    4 - 270 graus
 **/
 
 PECA* gera_peca(){
@@ -94,7 +94,7 @@ int gera_tipo_peca(){
 
 /**
 * Função que gera, aleatóriamente, a posicao inicial da peça.
-* Vertical: início da peça em [0][13].
+* Vertical: início da peça em [0][12].
 * Horizontal: [0][x]... x varia com o tamanho da peça, mas com o foco no centro da linha.
 */
 
@@ -107,11 +107,11 @@ void gera_posicao_peca(PECA* peca){
 			break;
 		case RETA_HORIZONTAL:
 			if(peca->tamanho == 3)
-				peca->pos_coluna = 12 - 1;
+				peca->pos_coluna = 11;
 			if(peca->tamanho == 4)
-				peca->pos_coluna = 12 - 1;
+				peca->pos_coluna = 11;
 			if(peca->tamanho == 5)
-				peca->pos_coluna = 12 - 2;
+				peca->pos_coluna = 10;
 			break;
 		default:
 			peca->pos_coluna = 12;
@@ -167,7 +167,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 			peca_qtd = peca_qtd->proximo;
 		}
 		if(add == 1){
-			adicionaPecaLista(nova_lista_qtd, copia);
+			adiciona_peca_lista(nova_lista_qtd, copia);
 		}
 		peca = peca->proximo;
 	}
@@ -178,7 +178,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 * Funcao inicialza lista de peças.
 *
 */
-void inicializaLista(PECAS /*@out@*/ *pecas){
+void inicializa_lista(PECAS /*@out@*/ *pecas){
 	pecas->primeiro = NULL;
 	pecas->ultimo = NULL;
 	pecas->tamanho = 0;
@@ -188,7 +188,7 @@ void inicializaLista(PECAS /*@out@*/ *pecas){
 * Adiciona uma peça na lista.
 *
 */
-void adicionaPecaLista(PECAS *pecas, PECA *peca ){
+void adiciona_peca_lista(PECAS *pecas, PECA *peca ){
 	if(pecas->primeiro == NULL){
 		pecas->primeiro = peca;
 		pecas->ultimo = peca;

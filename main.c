@@ -22,22 +22,26 @@ PECAS pecas;
 int pontuacao = 0;
 int fim_jogo = 0;
 
+int velocidade = 1;
+
 /*
 * Faz o movimento da peça atual a cada 1 segundo para baixo. 
 *
 */
 void *move_peca_um_segundo(){
 	while(fim_jogo == 0){
+		int time = 1000000;
+		velocidade = 1;
 		pthread_mutex_lock(&lock);
 		if(peca->status == FIXA && fim_jogo == 0){
 			peca = gera_peca();
-			adicionaPecaLista(&pecas, peca);
+			adiciona_peca_lista(&pecas, peca);
 			insere_peca_tabuleiro(tabuleiro, peca);
 			imprime_tabuleiro_sem_borda(tabuleiro);
 		}
 		pthread_mutex_unlock(&lock);
 		while(peca->status == EM_JOGO){
-			sleep(1);
+			usleep(time / velocidade);
 			pthread_mutex_lock(&lock);
 			move_peca_para_baixo(tabuleiro, peca);
 			imprime_tabuleiro_sem_borda(tabuleiro);
@@ -59,10 +63,10 @@ int main(){
 	time_t hora_inicio, hora_final;
 
 	//LISTA DE PECAS
-	inicializaLista(&pecas);
+	inicializa_lista(&pecas);
 
 	//LISTA DE QTD PECAS
-	inicializaLista(&lista_qtd_cada_peca);
+	inicializa_lista(&lista_qtd_cada_peca);
 
 	memset(tabuleiro, 0, NUM_LINHAS * NUM_COLUNAS * sizeof(int));
 
@@ -77,7 +81,7 @@ int main(){
 	peca = gera_peca();
 	insere_peca_tabuleiro(tabuleiro, peca);
 	imprime_tabuleiro_sem_borda(tabuleiro);
-	adicionaPecaLista(&pecas, peca);
+	adiciona_peca_lista(&pecas, peca);
 	pthread_create(&thread, NULL, move_peca_um_segundo, NULL);
 
 	while(fim_jogo == 0){
@@ -96,6 +100,7 @@ int main(){
 			if(input == 'B'){//28
 				pthread_mutex_lock(&lock);
 				move_peca_para_baixo(tabuleiro, peca);
+				velocidade = velocidade * 2;
 				pthread_mutex_unlock(&lock);
 			}
 			if(input == 'A'){//28
@@ -117,7 +122,7 @@ int main(){
 
 		if(peca->status == FIXA && fim_jogo == 0){
 			peca = gera_peca();
-			adicionaPecaLista(&pecas, peca);
+			adiciona_peca_lista(&pecas, peca);
 			insere_peca_tabuleiro(tabuleiro, peca);
 			imprime_tabuleiro_sem_borda(tabuleiro);
 		}
