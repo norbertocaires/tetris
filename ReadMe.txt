@@ -11,7 +11,7 @@ Instruções para compilação em ambiente linux:
 1 - Download dos arquivos;
 2 - Navegar, através de terminal linux, até a pasta para onde os arquivos foram copiados;
 3 - Executar o comando "make";
-4 - Caso queira executar os testes, executar o comando "./testePecas" ou "./testeEngine";
+4 - Caso queira executar os testes, executar o comando "./testePecas" ou "./testeEngine" ou "./testePlacar";
 5 - Caso queira executar o jogo, executar o comando "./tetris";
 
 Link: https://github.com/norbertocaires/tetris/

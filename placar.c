@@ -13,20 +13,22 @@
 *	@return Retorna um ponteiro para a string contendo o inteiro formatado.
 */
 
-char *format(int number){      
-   char    *retorno,
-      ret[100];
+char* format(int number){
+	char *retorno;
+	char ret[100];
 
    if (number < 10){
-      sprintf(ret,"0%d",number);
+      snprintf(ret, sizeof(ret), "0%d", number);
+	//sprintf(ret,"0%d",number);
       retorno = ret;
-      return retorno;
    }
    else{
-      sprintf(ret,"%d",number);
+      snprintf(ret, sizeof(ret), "%d", number);
+	//sprintf(ret,"%d",number);
       retorno = ret;
-      return retorno;
+
    }
+   return retorno;
 }      
 
 /** Essa funcao retorna a data atual, em que o programa esta sendo executado
@@ -47,13 +49,17 @@ char *data(void){
    ano = local->tm_year + 1900;
 
    // por algum motivo precisa converter os valores retornados pelos ponteiros
-   // da funcao em variaveis do tipo char      
-   sprintf(strDia,"%s",format(dia));
-   sprintf(strMes,"%s",format(mes));
-   sprintf(strAno,"%s",format(ano));
+   // da funcao em variaveis do tipo char
+   snprintf(strDia, sizeof(strDia), "%s", format(dia));
+//   sprintf(strDia,"%s",format(dia));
+   snprintf(strMes, sizeof(strMes), "%s", format(mes));
+//   sprintf(strMes,"%s",format(mes));
+   snprintf(strAno, sizeof(strAno), "%s", format(ano));
+//   sprintf(strAno,"%s",format(ano));
 
    // cria a variavel de retorno dos dados e cria um ponteiro para essa variavel      
-   sprintf(strData,"%s/%s/%s",strDia,strMes,strAno);
+   snprintf(strData, sizeof(strData), "%s/%s/%s",strDia,strMes,strAno);
+//   sprintf(strData,"%s/%s/%s",strDia,strMes,strAno);
    
    // retorna data no formato dd:MM:yyyy com um ponteiro
    dataPtr = strData;
@@ -144,7 +150,7 @@ void adiciona_lista_pontuacao(LISTA_PONTUACAO *lista_pontuacao, PONTUACAO *pontu
 */
 
 
-void retira_ultima_pontuacao(LISTA_PONTUACAO *lista_pontuacao){
+void retira_ultima_pontuacao(LISTA_PONTUACAO /*@out@*/ *lista_pontuacao){
 	lista_pontuacao->pontuacao_atual = lista_pontuacao->primeira_pontuacao;
 	while(lista_pontuacao->pontuacao_atual->proximo != NULL){
 		lista_pontuacao->pontuacao_atual = lista_pontuacao->pontuacao_atual->proximo;
@@ -174,11 +180,17 @@ LISTA_PONTUACAO *carrega_placar(int debug){
 
 	FILE *parquivo;
 	LISTA_PONTUACAO *lista_pontuacao = malloc(sizeof(LISTA_PONTUACAO));
+	lista_pontuacao->qtd_pontuacoes = 0;
+	lista_pontuacao->primeira_pontuacao = NULL;
+	lista_pontuacao->pontuacao_atual = NULL;
+	lista_pontuacao->ultima_pontuacao = NULL;
+
+
 	inicializa_lista_placar(lista_pontuacao);
 	if(debug == VERDADEIRO)
-		parquivo = fopen(ARQUIVO_PLACAR_TESTE,"r+");
+		parquivo = fopen(ARQUIVO_PLACAR_TESTE,"a+");
 	else
-		parquivo = fopen(ARQUIVO_PLACAR,"r+");
+		parquivo = fopen(ARQUIVO_PLACAR,"a+");
 
 	if (!parquivo){
 
@@ -189,6 +201,8 @@ LISTA_PONTUACAO *carrega_placar(int debug){
 	while (fscanf(parquivo,"%s %d %s %s",nome, &pontos, data, tempo) != EOF){
 
 		   PONTUACAO *pontuacao = malloc(sizeof(PONTUACAO));
+		   pontuacao->proximo = NULL;
+		   pontuacao->anterior = NULL;
 		   strcpy(pontuacao->nome,nome);
 		   pontuacao->pontos = pontos;
 		   strcpy(pontuacao->data,data);
@@ -216,8 +230,8 @@ LISTA_PONTUACAO *carrega_placar(int debug){
 void escreve_placar(LISTA_PONTUACAO *lista_pontuacao){
 
 	FILE *parquivo;
-	parquivo = fopen(ARQUIVO_PLACAR,"w+");
 	int rep = VERDADEIRO;
+	parquivo = fopen(ARQUIVO_PLACAR,"w+");
 
 	if (!parquivo){
 

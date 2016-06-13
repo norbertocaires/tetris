@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parametros.h"
 #include "pecas.h"
 #include "placar.h"
@@ -208,7 +209,8 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 
 	move(LINES-7,25);
 	printw("TEMPO DE JOGO: %d:%d:%d", horas, minutos%60, segundos);
-	sprintf(tempoJogo,"%d:%d:%d", horas, minutos%60, segundos);
+	//sprintf(tempoJogo,"%d:%d:%d", horas, minutos%60, segundos);
+	snprintf(tempoJogo, sizeof(tempoJogo),"%d:%d:%d", horas, minutos%60, segundos);
 
 	move(LINES-6,25);
 	printw("PONTUACAO FINAL: %d", pontuacao);
@@ -235,6 +237,7 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	move(5,10);
 	printw("Serao gravadas as 10 primeiras letras");
 	move(3,28);
+
 	getstr(nome);
 	
 	
@@ -245,18 +248,30 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	if (lista_pontuacao->primeira_pontuacao == NULL){// FIca repetido pois as verifciacoes do else if estava dando segmentation fault
 
 		pontuacao_aux = malloc(sizeof(PONTUACAO));
-		sprintf(pontuacao_aux->nome,"%s",nome);
+		pontuacao_aux->proximo = NULL;
+		pontuacao_aux->anterior = NULL;
+
+		//sprintf(pontuacao_aux->nome,"%s",nome);
+		snprintf(pontuacao_aux->nome, sizeof(pontuacao_aux->nome), "%s",nome);
+
 		pontuacao_aux->pontos = pontuacao;
-		sprintf(pontuacao_aux->data,"%s",data());
-		sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		//sprintf(pontuacao_aux->data,"%s",data());
+		snprintf(pontuacao_aux->data, sizeof(pontuacao_aux->data), "%s",data());
+		//sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		snprintf(pontuacao_aux->tempo, sizeof(pontuacao_aux->tempo), "%s",tempoJogo);
 		adiciona_lista_pontuacao(lista_pontuacao,pontuacao_aux);
 
 	}else if(pontuacao > lista_pontuacao->ultima_pontuacao->pontos || lista_pontuacao->qtd_pontuacoes < 5 ){
 		pontuacao_aux = malloc(sizeof(PONTUACAO));
-		sprintf(pontuacao_aux->nome,"%s",nome);
+		pontuacao_aux->proximo = NULL;
+		pontuacao_aux->anterior = NULL;
+		//sprintf(pontuacao_aux->nome,"%s",nome);
+		snprintf(pontuacao_aux->nome, sizeof(pontuacao_aux->nome), "%s",nome);
 		pontuacao_aux->pontos = pontuacao;
-		sprintf(pontuacao_aux->data,"%s",data());
-		sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		//sprintf(pontuacao_aux->data,"%s",data());
+		snprintf(pontuacao_aux->data, sizeof(pontuacao_aux->data), "%s",data());
+		//sprintf(pontuacao_aux->tempo,"%s",tempoJogo);
+		snprintf(pontuacao_aux->tempo, sizeof(pontuacao_aux->tempo), "%s",tempoJogo);
 		adiciona_lista_pontuacao(lista_pontuacao,pontuacao_aux);
 	}
 
@@ -264,13 +279,19 @@ void imprime_tela_final(PECAS* lista_qtd_cada_peca, int pontuacao, time_t hora_i
 	i =10;
 	while(lista_pontuacao->pontuacao_atual->proximo != NULL){
 		move(i,10);
-		printw("Nome: %s pontuacao: %d", lista_pontuacao->pontuacao_atual->nome,lista_pontuacao->pontuacao_atual->pontos);
+		printw("Tempo: %s \t Data: %s Pontuacao: %d Nome: %s", lista_pontuacao->pontuacao_atual->tempo,
+								       lista_pontuacao->pontuacao_atual->data,
+								       lista_pontuacao->pontuacao_atual->pontos,
+								       lista_pontuacao->pontuacao_atual->nome);
 		lista_pontuacao->pontuacao_atual = lista_pontuacao->pontuacao_atual->proximo;
 		i++;
 	}
 
 	move(i,10);
-	printw("Nome: %s pontuacao: %d", lista_pontuacao->pontuacao_atual->nome,lista_pontuacao->pontuacao_atual->pontos);
+	printw("Tempo: %s \t Data: %s Pontuacao: %d Nome: %s", lista_pontuacao->pontuacao_atual->tempo,
+							       lista_pontuacao->pontuacao_atual->data,
+							       lista_pontuacao->pontuacao_atual->pontos,
+							       lista_pontuacao->pontuacao_atual->nome);
 	lista_pontuacao->pontuacao_atual = lista_pontuacao->primeira_pontuacao;
 	
 	escreve_placar(lista_pontuacao);

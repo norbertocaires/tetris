@@ -1,13 +1,12 @@
 #ifndef _testePecas_h
 #define _testePecas_h
-#include "placar.h"
 
 /**
 * Abaixo estão as funções que efetuam os testes o modulo Pecas
 */
 
 
-void teste_inicializa_lista_placar(void);
+void teste_inicializa_lista_placar();
 
 /**
 *		Função que efetuara a leitura de um arquivo "teste_placar.txt", e carregara o placar em uma lista de pontuacoes.

@@ -7,10 +7,10 @@
 /**
 * Função que gera uma PECA. Ela gera, aleatoriamente, seu tipo,tamanho e posicao.
 *	
-* Posicoes: 0 - Inicial
-*       1 - 90 graus
-*	    2 - 180 graus	
-*	    3 - 270 graus
+* Posicoes: 1 - Inicial
+*           2 - 90 graus
+*	    3 - 180 graus	
+*	    4 - 270 graus
 *
 *
 *     @return Retorna um ponteiro para PECA, 
@@ -182,7 +182,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 			peca_qtd = peca_qtd->proximo;
 		}
 		if(add == 1){
-			adicionaPecaLista(nova_lista_qtd, copia);
+			adiciona_peca_lista(nova_lista_qtd, copia);
 		}
 		peca = peca->proximo;
 	}
@@ -193,7 +193,7 @@ void gera_lista_de_qtds(PECAS* pecas, PECAS *nova_lista_qtd){
 * Funcao inicialza lista de peças.
 * @param Ponteiro para a lista de peças que será inicializada.
 */
-void inicializaLista(PECAS /*@out@*/ *pecas){
+void inicializa_lista(PECAS /*@out@*/ *pecas){
 	pecas->primeiro = NULL;
 	pecas->ultimo = NULL;
 	pecas->tamanho = 0;
@@ -206,7 +206,7 @@ void inicializaLista(PECAS /*@out@*/ *pecas){
 * @param peca: Nova peça que será inserida na lista.
 *
 */
-void adicionaPecaLista(PECAS *pecas, PECA *peca ){
+void adiciona_peca_lista(PECAS *pecas, PECA *peca ){
 	if(pecas->primeiro == NULL){
 		pecas->primeiro = peca;
 		pecas->ultimo = peca;

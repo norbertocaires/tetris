@@ -14,7 +14,7 @@ PECA* gera_peca_teste(int tamanho, int tipo){
 	PECA* peca = malloc(sizeof(PECA));
 	peca->status = EM_JOGO;
 	peca->pos_linha = 0;
-	peca->pos_coluna = 13;
+	peca->pos_coluna = 0;
 	peca->tipo = tipo;
 	peca->tamanho = tamanho;
 	peca->cor = 100;
@@ -37,7 +37,12 @@ void teste_gera_peca(){
 	passou = VERDADEIRO;
   	peca = gera_peca();
 
-  	if(peca->tipo != RETA_VERTICAL && peca->tipo != RETA_HORIZONTAL){
+  	if(peca->tipo != RETA_VERTICAL && 
+	   peca->tipo != RETA_HORIZONTAL &&
+	   peca->tipo != PECA_Z &&
+	   peca->tipo != PECA_T &&
+	   peca->tipo != PECA_QUADRADO &&
+	   peca->tipo != PECA_L){
   		passou = FALSO;
   	}
   		
@@ -77,7 +82,12 @@ void teste_gera_tipo_peca(){
 
 		for(i=0;i<30;i++){
 		temp = gera_tipo_peca();
-		if(temp!=RETA_VERTICAL && temp!=RETA_HORIZONTAL){
+		if(temp != RETA_VERTICAL && 
+		   temp != RETA_HORIZONTAL &&
+		   temp != PECA_Z &&
+		   temp != PECA_T &&
+		   temp != PECA_QUADRADO &&
+		   temp != PECA_L){
 			passou = FALSO;
 		}
 	}
@@ -108,7 +118,7 @@ void teste_gera_posicao_peca(){
     	return;
     }
 
-    if(peca1->pos_coluna != 13 || peca2->pos_coluna != 12 || peca3->pos_coluna != 11 || peca3->pos_coluna != 11)
+    if(peca1->pos_coluna != 12 || peca2->pos_coluna != 11 || peca3->pos_coluna != 11 || peca4->pos_coluna != 10)
     	passou = FALSO;
 
     CU_ASSERT_TRUE(passou);
@@ -131,7 +141,7 @@ void teste_gera_cor_peca(){
 /** Testa de a inicialização de lista é feita corretamente */
 void teste_inicia_lista_pecas(void){
 	PECAS lista;
-	inicializaLista(&lista);
+	inicializa_lista(&lista);
 	CU_ASSERT_TRUE( lista.primeiro == NULL );
 	CU_ASSERT_TRUE( lista.ultimo == NULL );
 	CU_ASSERT_TRUE( lista.tamanho == 0 );
@@ -141,8 +151,8 @@ void teste_inicia_lista_pecas(void){
 void teste_adiciona_na_lista(void){
 	PECAS lista;
 	PECA* peca =  gera_peca();
-	inicializaLista(&lista);
-	adicionaPecaLista(&lista, peca);
+	inicializa_lista(&lista);
+	adiciona_peca_lista(&lista, peca);
 	CU_ASSERT_TRUE( lista.primeiro == peca );
 	CU_ASSERT_TRUE( lista.ultimo == peca );
 	CU_ASSERT_TRUE( lista.tamanho == 1 );
@@ -153,12 +163,12 @@ void teste_adiciona_60_pecas_na_lista(void){
 	PECAS lista;
 	PECA* peca_primeira;
 	int i;
-	inicializaLista(&lista);
+	inicializa_lista(&lista);
 	peca_primeira = gera_peca();
-	adicionaPecaLista(&lista, peca_primeira);
+	adiciona_peca_lista(&lista, peca_primeira);
 	for(i=2;i<=60;i++){
 		PECA* peca = gera_peca();
-		adicionaPecaLista(&lista, peca);
+		adiciona_peca_lista(&lista, peca);
 		CU_ASSERT_TRUE( lista.primeiro == peca_primeira );
 		CU_ASSERT_TRUE( lista.ultimo == peca );
 		CU_ASSERT_TRUE( lista.tamanho == i );

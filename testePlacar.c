@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "parametros.h"
-#include "testePecas.h"
+#include "testePlacar.h"
 #include "CUnit/CUnit.h"
 #include "CUnit/Basic.h"
 #include "placar.h"
@@ -13,10 +13,15 @@
 *   Função que teste se a inicialização da lista foi feita corretamente pela função "inicializa_lista_placar()".
 */
 
-void teste_inicializa_lista_placar(void){
+void teste_inicializa_lista_placar(){
 	int passou = FALSO;
 	LISTA_PONTUACAO *lista;
 	lista = malloc(sizeof(LISTA_PONTUACAO));
+	lista->qtd_pontuacoes = 0;
+	lista->primeira_pontuacao = NULL;
+	lista->pontuacao_atual = NULL;
+	lista->ultima_pontuacao = NULL;
+
 	inicializa_lista_placar(lista);
 
 
@@ -126,9 +131,15 @@ void teste_adiciona_lista_pontuacao(void){
 
 	//Cenario 1
 	pontuacao = malloc (sizeof(PONTUACAO));
-	sprintf(pontuacao->nome,"nome_teste");
-	sprintf(pontuacao->data,"01/01/01");
-	sprintf(pontuacao->tempo,"00:00:00");
+	pontuacao->proximo = NULL;
+	pontuacao->anterior = NULL;
+
+	//sprintf(pontuacao->nome,"nome_teste");
+	snprintf(pontuacao->nome, sizeof(pontuacao->nome), "%s","nome_teste");
+	//sprintf(pontuacao->data,"01/01/01");
+	snprintf(pontuacao->data, sizeof(pontuacao->data), "%s","01/01/01");	
+	//sprintf(pontuacao->tempo,"00:00:00");
+	snprintf(pontuacao->tempo, sizeof(pontuacao->tempo), "%s","00:00:00");
 	pontuacao->pontos = 600;
 	adiciona_lista_pontuacao(lista,pontuacao);
 	if(lista->primeira_pontuacao->pontos == 600)
@@ -137,9 +148,15 @@ void teste_adiciona_lista_pontuacao(void){
 		passou = FALSO;
 	//Cenario 2
 	pontuacao = malloc (sizeof(PONTUACAO));
-	sprintf(pontuacao->nome,"nome_teste");
-	sprintf(pontuacao->data,"01/01/01");
-	sprintf(pontuacao->tempo,"00:00:00");
+	pontuacao->proximo = NULL;
+	pontuacao->anterior = NULL;
+
+	//sprintf(pontuacao->nome,"nome_teste");
+	snprintf(pontuacao->nome, sizeof(pontuacao->nome), "%s","nome_teste");
+	//sprintf(pontuacao->data,"01/01/01");
+	snprintf(pontuacao->data, sizeof(pontuacao->data), "%s","01/01/01");	
+	//sprintf(pontuacao->tempo,"00:00:00");
+	snprintf(pontuacao->tempo, sizeof(pontuacao->tempo), "%s","00:00:00");
 	pontuacao->pontos = 150;
 	adiciona_lista_pontuacao(lista,pontuacao);
 	if(lista->ultima_pontuacao->pontos == 150)
@@ -148,9 +165,15 @@ void teste_adiciona_lista_pontuacao(void){
 		passou = FALSO;
 	//Cenario 3
 	pontuacao = malloc (sizeof(PONTUACAO));
-	sprintf(pontuacao->nome,"nome_teste");
-	sprintf(pontuacao->data,"01/01/01");
-	sprintf(pontuacao->tempo,"00:00:00");
+	pontuacao->proximo = NULL;
+	pontuacao->anterior = NULL;
+
+	//sprintf(pontuacao->nome,"nome_teste");
+	snprintf(pontuacao->nome, sizeof(pontuacao->nome), "%s","nome_teste");
+	//sprintf(pontuacao->data,"01/01/01");
+	snprintf(pontuacao->data, sizeof(pontuacao->data), "%s","01/01/01");	
+	//sprintf(pontuacao->tempo,"00:00:00");
+	snprintf(pontuacao->tempo, sizeof(pontuacao->tempo), "%s","00:00:00");
 	pontuacao->pontos = 450;
 	adiciona_lista_pontuacao(lista,pontuacao);
 	passou = FALSO;
@@ -164,7 +187,7 @@ void teste_adiciona_lista_pontuacao(void){
 
 }
 /** Adiciona os casos de teste na suite de testes*/
-void  adicionar_suite(void){
+void  adicionar_suite_teste_placar(void){
 	CU_pSuite suite;
 
 	/*Cria uma suite que conterá todos os testes*/
@@ -179,14 +202,14 @@ void  adicionar_suite(void){
 }
 
 /**Executa a suite de testes*/
-int rodar_teste_pecas(){
+int rodar_teste_placar(){
 
 	/*Inicializa o registro de suítes e testes do CUnit*/
 	if (CUE_SUCCESS != CU_initialize_registry())
     		return CU_get_error();
 
     /*Adiciona os testes ao registro*/
-   	adicionar_suite();
+   	adicionar_suite_teste_placar();
 
 	/*Muda o modo do CUnit para o modo VERBOSE
 	 O modo VERBOSE mostra algumas informacoes a
@@ -205,6 +228,6 @@ int rodar_teste_pecas(){
 }
 
 int main(){
-	rodar_teste_pecas();
+	rodar_teste_placar();
 	return 1;
 }
